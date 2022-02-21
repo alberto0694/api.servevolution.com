@@ -14,7 +14,7 @@ use App\Http\Controllers\UsuarioController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('/auth/login', [ UsuarioController::class, 'login', 'login' ] );
+Route::get('/auth/login', [ UsuarioController::class, 'login', 'login' ] );
 
 Route::group([
     
