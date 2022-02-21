@@ -1324,7 +1324,7 @@
             "time": "2022-01-10T08:52:49+00:00"
         },
         {
-            "name": "lcobucci/jwt",
+            "name": "lcobucci/jwt --ignore-platform-reqs",
             "version": "3.3.3",
             "source": {
                 "type": "git",
@@ -5375,7 +5375,7 @@
             "time": "2021-12-08T09:12:39+00:00"
         },
         {
-            "name": "tymon/jwt-auth",
+            "name": "tymon/jwt-auth --ignore-platform-reqs",
             "version": "1.0.2",
             "source": {
                 "type": "git",
