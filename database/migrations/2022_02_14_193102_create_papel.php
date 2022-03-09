@@ -15,6 +15,9 @@ class CreatePapel extends Migration
     {
         Schema::create('papel', function (Blueprint $table) {
             $table->id();
+            $table->integer('permissao_id');
+            $table->string('acao');
+            $table->string('descricao');
             $table->timestamps();
         });
     }

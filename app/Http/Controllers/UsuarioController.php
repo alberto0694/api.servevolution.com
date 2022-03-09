@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Usuario;
-use \Validator;
+use Validator;
 
 class UsuarioController extends Controller
 {
     public function login(Request $request){
+
     	$validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|string|min:6',
@@ -62,7 +63,7 @@ class UsuarioController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function refresh() {
-        return $this->createNewToken(auth()->refresh());
+        return $this->createNewToken(Auth::refresh());
     }
     /**
      * Get the authenticated Usuario.
@@ -81,12 +82,28 @@ class UsuarioController extends Controller
      */
     protected function createNewToken($token){
 
+        $menu = $this->getUsuarioMenu(auth()->user());
 
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
-            'usuario' => auth()->user()
+            'expires_in' => Auth::factory()->getTTL() * 60,
+            'usuario' => auth()->user(),
+            'menu' => $menu
         ]);
+    }
+
+    protected function getUsuarioMenu($usuario)
+    {
+        try {
+
+            $menu = collect(\DB::select("select * from menu"));
+            return $menu;
+
+        } catch (\Throwable $th) {
+
+            throw $th;
+
+        }
     }
 }

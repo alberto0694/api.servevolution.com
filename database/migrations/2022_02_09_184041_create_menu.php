@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMenuSistema extends Migration
+class CreateMenu extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,15 @@ class CreateMenuSistema extends Migration
      */
     public function up()
     {
-        Schema::create('menu_sistema', function (Blueprint $table) {            
+        Schema::create('menu', function (Blueprint $table) {
             $table->id();
             $table->string('titulo');
             $table->integer('nivel');
             $table->string('icone');
-            $table->string('iconeaux');
-            $table->integer('papel_id');    
-            $table->string('menu_pai_id')->nullable();    
+            $table->string('icone_aux');
+            $table->integer('papel_id');
+            $table->string('rota')->nullable();
+            $table->string('menu_pai_id')->nullable();
             $table->boolean('excluido')->default(false);
             $table->timestamps();
         });
@@ -33,6 +34,6 @@ class CreateMenuSistema extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menu_sistema');
+        Schema::dropIfExists('menu');
     }
 }

@@ -15,7 +15,13 @@ class CreatePapelUsuario extends Migration
     {
         Schema::create('papel_usuario', function (Blueprint $table) {
             $table->id();
+            $table->integer('papel_id');
+            $table->integer('usuario_id');
             $table->timestamps();
+
+            $table->foreign('papel_id')->references('id')->on('papel');
+            $table->foreign('usuario_id')->references('id')->on('usuario');
+
         });
     }
 

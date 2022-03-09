@@ -15,6 +15,19 @@ class CreateEndereco extends Migration
     {
         Schema::create('endereco', function (Blueprint $table) {
             $table->id();
+            $table->string('cep');
+            $table->string('logradouro');
+            $table->string('complemento');
+            $table->string('pais');
+            $table->string('bairro');
+            $table->string('numero');
+            $table->integer('estado_id');
+            $table->integer('municipio_id');
+            $table->string('excluido');
+
+            $table->foreign('estado_id')->references('id')->on('estado');
+            $table->foreign('municipio_id')->references('id')->on('municipio');
+
             $table->timestamps();
         });
     }

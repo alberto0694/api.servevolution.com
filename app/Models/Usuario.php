@@ -40,7 +40,7 @@ class Usuario extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
@@ -56,5 +56,6 @@ class Usuario extends Authenticatable implements JWTSubject
      */
     public function getJWTCustomClaims() {
         return [];
-    } 
+    }
+
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFuncionarioEndereco extends Migration
+class CreateFuncionarioTipoServico extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,15 @@ class CreateFuncionarioEndereco extends Migration
      */
     public function up()
     {
-        Schema::create('funcionario_endereco', function (Blueprint $table) {
+        Schema::create('funcionario_tipo_servico', function (Blueprint $table) {
             $table->id();
-            $table->integer('endereco_id');
+            $table->integer('tipo_servico_id');
             $table->integer('funcionario_id');
             $table->timestamps();
 
-            $table->foreign('endereco_id')->references('id')->on('endereco');
+            $table->foreign('tipo_servico_id')->references('id')->on('tipo_servico');
             $table->foreign('funcionario_id')->references('id')->on('funcionario');
+
         });
     }
 
@@ -31,6 +32,6 @@ class CreateFuncionarioEndereco extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('funcionario_endereco');
+        Schema::dropIfExists('funcionario_tipo_servico');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTabelaPrecoCliente extends Migration
+class CreateCliente extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateTabelaPrecoCliente extends Migration
      */
     public function up()
     {
-        Schema::create('tabela_preco_cliente', function (Blueprint $table) {
+        Schema::create('cliente', function (Blueprint $table) {
             $table->id();
-            $table->integer('tabela_preco_id');
-            $table->integer('cliente_id');
+            $table->integer('pessoa_id');
             $table->timestamps();
 
-            $table->foreign('tabela_preco_id')->references('id')->on('tabela_preco');
-            $table->foreign('cliente_id')->references('id')->on('cliente');
+
+            $table->foreign('pessoa_id')->references('id')->on('pessoa');
         });
     }
 
@@ -31,6 +30,6 @@ class CreateTabelaPrecoCliente extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tabela_preco_cliente');
+        Schema::dropIfExists('cliente');
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\FuncionarioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +17,7 @@ use App\Http\Controllers\UsuarioController;
 Route::post('/auth/login', [ UsuarioController::class, 'login', 'login' ] );
 
 Route::group([
-    
+
     'middleware' => 'jwt.auth',
     'prefix' => 'auth'
 
@@ -26,6 +26,16 @@ Route::group([
     Route::post('/register', [ UsuarioController::class, 'register' ]);
     Route::post('/logout', [ UsuarioController::class, 'logout' ]);
     Route::post('/refresh', [ UsuarioController::class, 'refresh' ]);
-    Route::get('/user-profile', [ UsuarioController::class, 'userProfile' ]);    
-    
+    Route::get('/user-profile', [ UsuarioController::class, 'userProfile' ]);
+
 });
+
+
+
+
+
+
+Route::post('/funcionario/create-simples', [ FuncionarioController::class, 'createSimples' ]);
+Route::post('/funcionario/createOrUpdate', [ FuncionarioController::class, 'createOrUpdate' ]);
+Route::get('/funcionario/get/{id}', [ FuncionarioController::class, 'getFuncionario' ]);
+Route::get('/funcionario/list', [ FuncionarioController::class, 'getFuncionarios' ]);
