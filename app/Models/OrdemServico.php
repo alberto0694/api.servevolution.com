@@ -11,4 +11,22 @@ class OrdemServico extends Model
 
     protected $table = 'ordem_servico';
 
+    protected $fillable = [
+        'id',
+        'titulo',
+        'descricao',
+        'ativo'
+    ];
+
+
+    public function servicos()
+    {
+        return $this->hasManyThrough(TipoServico::class, OrdemServicoTipo::class);
+    }
+
+    public function clientes()
+    {
+        return $this->hasManyThrough(TipoServico::class, OrdemServicoTipo::class);
+    }
+
 }

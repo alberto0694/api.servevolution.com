@@ -15,6 +15,8 @@ class CreateEstado extends Migration
     {
         Schema::create('estado', function (Blueprint $table) {
             $table->id();
+            $table->string('nome');
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
         });
     }

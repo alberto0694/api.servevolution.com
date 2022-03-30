@@ -21,7 +21,7 @@ class Endereco extends Model
         'numero',
         'estado',
         'cidade',
-        'excluido',
+        'ativo',
     ];
 
     public function pessoa()

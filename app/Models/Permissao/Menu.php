@@ -19,7 +19,7 @@ class Menu extends Model
         'rota',
         'papel_id',
         'menu_pai_id',
-        'excluido',
+        'ativo'
     ];
 
 }

@@ -97,7 +97,14 @@ class UsuarioController extends Controller
     {
         try {
 
-            $menu = collect(\DB::select("select * from menu"));
+            $menu = collect(\DB::select("SELECT
+                                            *
+                                        FROM
+                                            menu
+                                        WHERE
+                                            papel_id IN ( SELECT papel_id FROM papel_usuario WHERE usuario_id = {$usuario->id} )
+                                        ORDER BY
+                                            id ASC"));
             return $menu;
 
         } catch (\Throwable $th) {

@@ -16,6 +16,7 @@ class CreatePerfil extends Migration
         Schema::create('perfil', function (Blueprint $table) {
             $table->id();
             $table->string('descricao');
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
         });
     }

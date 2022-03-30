@@ -11,4 +11,9 @@ class OrdemServicoFaturamento extends Model
 
     protected $table = 'ordem_servico_faturamento';
 
+    protected $fillable = [
+        'id',
+        'ativo'
+    ];
+
 }

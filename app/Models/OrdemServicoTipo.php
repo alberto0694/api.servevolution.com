@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Models\Permissao;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Perfil extends Model
+class OrdemServicoTipo extends Model
 {
     use HasFactory;
 
-    protected $table = 'perfil';
+    protected $table = 'ordem_servico_tipo';
 
     protected $fillable = [
         'id',
-        'descricao',
-        'ativo'
+        'ordem_servico_id',
+        'tipo_servico_id'
     ];
 
 }

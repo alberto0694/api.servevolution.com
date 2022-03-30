@@ -16,6 +16,7 @@ class CreateFuncionario extends Migration
         Schema::create('funcionario', function (Blueprint $table) {
             $table->id();
             $table->integer('pessoa_id');
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
 
 

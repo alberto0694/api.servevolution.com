@@ -18,7 +18,11 @@ class CreatePapel extends Migration
             $table->integer('permissao_id');
             $table->string('acao');
             $table->string('descricao');
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
+
+            $table->foreign('permissao_id')->references('id')->on('permissao');
+
         });
     }
 

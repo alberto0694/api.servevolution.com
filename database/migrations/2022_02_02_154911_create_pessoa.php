@@ -18,10 +18,11 @@ class CreatePessoa extends Migration
             $table->string('razao')->nullable();
             $table->string('apelido');
             $table->string('nome')->nullable();
-            $table->string('foto')->nullable();
+            $table->longText('foto')->nullable();
             $table->string('contatoImediato');
             $table->string('telefone')->nullable();
             $table->string('email')->nullable();
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
         });
     }

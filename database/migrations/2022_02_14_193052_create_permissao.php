@@ -18,7 +18,9 @@ class CreatePermissao extends Migration
             $table->string('programa');
             $table->string('titulo');
             $table->string('descricao');
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
+
         });
     }
 

@@ -17,10 +17,15 @@ class CreateUsuario extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->integer('pessoa_id');
             $table->string('password');
             $table->string('remember_token')->nullable();
             $table->string('email_verified_at')->nullable();
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
+
+            $table->foreign('pessoa_id')->references('id')->on('pessoa');
+
         });
     }
 

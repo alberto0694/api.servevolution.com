@@ -18,6 +18,7 @@ class CreatePapelUsuario extends Migration
             $table->integer('papel_id');
             $table->integer('usuario_id');
             $table->timestamps();
+            $table->boolean('ativo')->default(true);
 
             $table->foreign('papel_id')->references('id')->on('papel');
             $table->foreign('usuario_id')->references('id')->on('usuario');

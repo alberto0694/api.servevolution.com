@@ -16,10 +16,12 @@ class CreateCliente extends Migration
         Schema::create('cliente', function (Blueprint $table) {
             $table->id();
             $table->integer('pessoa_id');
+            $table->string('senha');
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
 
-
             $table->foreign('pessoa_id')->references('id')->on('pessoa');
+
         });
     }
 

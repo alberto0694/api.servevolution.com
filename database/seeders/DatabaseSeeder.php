@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Usuario;
+use App\Models\Pessoa;
 use App\Models\Permissao\Permissao;
 use App\Models\Permissao\Papel;
 use App\Models\Permissao\Menu;
@@ -19,10 +20,16 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
+        Pessoa::create([
+            'apelido' => 'Administrador',
+            'contatoImediato' => 'admin@teste.com.br'
+        ]);
+
         Usuario::create([
             'name' => 'Usuário de teste',
             'email' => 'usuario@teste.com.br',
-            'password' => bcrypt('123456')
+            'password' => bcrypt('123456'),
+            'pessoa_id' => 1
         ]);
 
         Permissao::insert([
@@ -48,10 +55,12 @@ class DatabaseSeeder extends Seeder
         Menu::insert([
             ['titulo' => "Cadastros", 'nivel' => 1, 'papel_id' => 1, 'menu_pai_id' => null, 'rota' => null, 'icone' => "pessoa-edit-white28x28", 'icone_aux' => "pessoa-edit28x28" ],
             ['titulo' => "Funcionários", 'nivel' => 2, 'papel_id' => 1, 'menu_pai_id' => 1, 'rota' => "/app/funcionarios", 'icone' => "pessoa-white28x28", 'icone_aux' => "pessoa28x28" ],
-            ['titulo' => "Tipos de Serviços", 'nivel' => 2, 'papel_id' => 2, 'menu_pai_id' => 1, 'rota' => "/app/tipos-servicos", 'icone' => "pessoa-white28x28", 'icone_aux' => "pessoa28x28" ],
+            ['titulo' => "Tipos de Serviços", 'nivel' => 2, 'papel_id' => 2, 'menu_pai_id' => 1, 'rota' => "/app/tipo-servicos", 'icone' => "pessoa-white28x28", 'icone_aux' => "pessoa28x28" ],
+            ['titulo' => "Clientes", 'nivel' => 2, 'papel_id' => 2, 'menu_pai_id' => 1, 'rota' => "/app/clientes", 'icone' => "pessoa-white28x28", 'icone_aux' => "pessoa28x28" ],
+            ['titulo' => "Tabelas de Preço", 'nivel' => 2, 'papel_id' => 2, 'menu_pai_id' => 1, 'rota' => "/app/tabelas-preco", 'icone' => "pessoa-white28x28", 'icone_aux' => "pessoa28x28" ],
 
             ['titulo' => "Ordem de Serviço", 'nivel' => 1, 'papel_id' => 7, 'menu_pai_id' => null, 'rota' => null, 'icone' => "endereco-white28x28", 'icone_aux' => "endereco28x28" ],
-            ['titulo' => "Agendamentos", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 4, 'rota' => "/app/ordem-servicos/agendamentos", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
+            ['titulo' => "Agendamentos", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 6, 'rota' => "/app/ordem-servicos/agendamentos", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
         ]);
 
         PapelUsuario::insert([
@@ -61,6 +70,7 @@ class DatabaseSeeder extends Seeder
             ['papel_id' => 4, 'usuario_id' => 1 ],
             ['papel_id' => 5, 'usuario_id' => 1 ],
             ['papel_id' => 6, 'usuario_id' => 1 ],
+            ['papel_id' => 7, 'usuario_id' => 1 ],
         ]);
 
 

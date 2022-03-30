@@ -22,6 +22,8 @@ class Usuario extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'pessoa_id',
+        'ativo'
     ];
     /**
      * The attributes that should be hidden for arrays.

@@ -14,7 +14,8 @@ class Permissao extends Model
     protected $fillable = [
         'programa',
         'titulo',
-        'descricao'
+        'descricao',
+        'ativo'
     ];
 
 }

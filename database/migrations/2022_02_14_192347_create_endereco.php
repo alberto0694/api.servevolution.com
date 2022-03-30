@@ -23,7 +23,7 @@ class CreateEndereco extends Migration
             $table->string('numero');
             $table->integer('estado_id');
             $table->integer('municipio_id');
-            $table->string('excluido');
+            $table->boolean('ativo')->default(true);
 
             $table->foreign('estado_id')->references('id')->on('estado');
             $table->foreign('municipio_id')->references('id')->on('municipio');

@@ -22,7 +22,7 @@ class CreateMenu extends Migration
             $table->integer('papel_id');
             $table->string('rota')->nullable();
             $table->string('menu_pai_id')->nullable();
-            $table->boolean('excluido')->default(false);
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
         });
     }

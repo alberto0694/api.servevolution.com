@@ -17,6 +17,7 @@ class CreateMunicipio extends Migration
             $table->id();
             $table->string('nome');
             $table->integer('estado_id');
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
 
 

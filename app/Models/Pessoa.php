@@ -19,7 +19,8 @@ class Pessoa extends Model
         'foto',
         'contatoImediato',
         'telefone',
-        'email'
+        'email',
+        'ativo'
     ];
 
 }

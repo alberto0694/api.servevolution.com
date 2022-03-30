@@ -15,6 +15,7 @@ class CreateOrdemServico extends Migration
     {
         Schema::create('ordem_servico', function (Blueprint $table) {
             $table->id();
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
         });
     }

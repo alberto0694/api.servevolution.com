@@ -16,6 +16,7 @@ class CreateTabelaPreco extends Migration
         Schema::create('tabela_preco', function (Blueprint $table) {
             $table->id();
             $table->string('descricao');
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
         });
     }

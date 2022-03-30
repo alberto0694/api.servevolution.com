@@ -15,7 +15,8 @@ class Papel extends Model
         'id',
         'permissao_id',
         'acao',
-        'descricao'
+        'descricao',
+        'ativo'
     ];
 
 }

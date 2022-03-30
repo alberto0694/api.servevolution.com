@@ -15,6 +15,7 @@ class CreateOrdemServicoFaturamento extends Migration
     {
         Schema::create('ordem_servico_faturamento', function (Blueprint $table) {
             $table->id();
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
         });
     }
