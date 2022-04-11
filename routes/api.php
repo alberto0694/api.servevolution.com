@@ -5,6 +5,7 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\FuncionarioController;
 use App\Http\Controllers\TipoServicoController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\OrdemServicoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,14 +65,42 @@ Route::group([
 Route::group([
 
     'middleware' => 'jwt.auth',
+    'prefix' => 'tipo-custo-servicos'
+
+], function ($router) {
+
+    Route::get('/list', [ TipoCustoServicoController::class, 'list' ]);
+    Route::post('/createOrUpdate', [ TipoCustoServicoController::class, 'createOrUpdate' ]);
+    Route::get('/delete/{id}', [ TipoCustoServicoController::class, 'deleteTipoCustoServico' ]);
+    Route::get('/get/{id}', [ TipoCustoServicoController::class, 'getTipoCustoServico' ]);
+
+});
+
+Route::group([
+
+    'middleware' => 'jwt.auth',
     'prefix' => 'clientes'
 
 ], function ($router) {
 
     Route::get('/list', [ ClienteController::class, 'list' ]);
     Route::post('/createOrUpdate', [ ClienteController::class, 'createOrUpdate' ]);
-    Route::get('/delete/{id}', [ ClienteController::class, 'deleteTipoServico' ]);
+    Route::get('/delete/{id}', [ ClienteController::class, 'deleteCliente' ]);
     Route::get('/get/{id}', [ ClienteController::class, 'getCliente' ]);
+
+});
+
+Route::group([
+
+    'middleware' => 'jwt.auth',
+    'prefix' => 'ordem-servicos'
+
+], function ($router) {
+
+    Route::get('/list', [ OrdemServicoController::class, 'list' ]);
+    Route::post('/createOrUpdate', [ OrdemServicoController::class, 'createOrUpdate' ]);
+    Route::get('/delete/{id}', [ OrdemServicoController::class, 'deleteOrdemServico' ]);
+    Route::get('/get/{id}', [ OrdemServicoController::class, 'getOrdemServico' ]);
 
 });
 

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Funcionario;
+use App\Models\OrdemServicoFuncionario;
 
 class OrdemServico extends Model
 {
@@ -15,18 +17,14 @@ class OrdemServico extends Model
         'id',
         'titulo',
         'descricao',
+        'tipo_servico_id',
+        'cliente_id',
         'ativo'
     ];
 
-
-    public function servicos()
+    public function funcionarios()
     {
-        return $this->hasManyThrough(TipoServico::class, OrdemServicoTipo::class);
-    }
-
-    public function clientes()
-    {
-        return $this->hasManyThrough(TipoServico::class, OrdemServicoTipo::class);
+        return $this->belongsToMany(Funcionario::class, OrdemServicoFuncionario::class);
     }
 
 }
