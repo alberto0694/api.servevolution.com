@@ -160,6 +160,8 @@ class OrdemServicoController extends Controller
                                     ->where('funcionario_id', $funcionario_id)
                                     ->first();
 
+
+
             if(!empty($ordem_servico_func))
             {
                 $ordem_servico_func->delete();
