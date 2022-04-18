@@ -87,7 +87,7 @@ class UsuarioController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => 60000000000,
+            'expires_in' => 2592000,
             'usuario' => auth()->user(),
             'menu' => $menu
         ]);

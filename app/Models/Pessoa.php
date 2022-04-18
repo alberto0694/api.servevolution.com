@@ -23,4 +23,25 @@ class Pessoa extends Model
         'ativo'
     ];
 
+    public function clientes()
+    {
+        return $this->hasMany(Cliente::class);
+    }
+
+    public function usuarios()
+    {
+        return $this->hasMany(Usuario::class);
+    }
+
+    public function funcionarios()
+    {
+        return $this->hasMany(Funcionario::class);
+    }
+
+    public function colaboradores()
+    {
+        return $this->hasMany(Colaborador::class);
+    }
+
+
 }

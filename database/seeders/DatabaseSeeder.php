@@ -2,13 +2,19 @@
 
 namespace Database\Seeders;
 
+use App\Models\TipoCusto;
+use App\Models\TipoServico;
 use Illuminate\Database\Seeder;
 use App\Models\Usuario;
+use App\Models\Funcionario;
+use App\Models\Colaborador;
 use App\Models\Pessoa;
+use App\Models\Cliente;
 use App\Models\Permissao\Permissao;
 use App\Models\Permissao\Papel;
 use App\Models\Permissao\Menu;
 use App\Models\Permissao\PapelUsuario;
+use Faker;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,17 +26,63 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
-        Pessoa::create([
-            'apelido' => 'Administrador',
-            'contatoImediato' => 'admin@teste.com.br'
+        $this->fakeDataSeed();
+        $this->permissaoSeed();
+
+    }
+
+    public function fakeDataSeed(){
+
+        $faker = Faker\Factory::create();
+        $clientes = Pessoa::factory()
+                        ->count(30)
+                        ->create()
+                        ->each(function($pessoa) use($faker) {
+                            $pessoa->clientes()->save(new Cliente());
+                            $pessoa->usuarios()->save(new Usuario([
+                                'name' => $pessoa->razao ?? $pessoa->apelido,
+                                'email' => $faker->email(),
+                                'password' => bcrypt('123456')
+                            ]));
+                        });
+
+        $funcionarios = Pessoa::factory()
+                        ->count(30)
+                        ->create()
+                        ->each(function($pessoa){
+                            $pessoa->funcionarios()->save(new Funcionario());
+                        });
+
+        $colaboradores = Pessoa::factory()
+                        ->count(30)
+                        ->create()
+                        ->each(function($pessoa) use($faker) {
+                            $pessoa->colaboradores()->save(new Colaborador());
+                            $pessoa->usuarios()->save(new Usuario([
+                                'name' => $pessoa->razao ?? $pessoa->apelido,
+                                'email' => $faker->email(),
+                                'password' => bcrypt('123456')
+                            ]));
+                        });
+
+
+        TipoServico::insert([
+            [ 'descricao' => 'Limpeza'],
+            [ 'descricao' => 'Carregamento'],
+            [ 'descricao' => 'Serviços Gerais'],
+            [ 'descricao' => 'Lavação'],
+            [ 'descricao' => 'Cuidadora']
         ]);
 
-        Usuario::create([
-            'name' => 'Usuário de teste',
-            'email' => 'usuario@teste.com.br',
-            'password' => bcrypt('123456'),
-            'pessoa_id' => 1
+        TipoCusto::insert([
+            [ 'descricao' => 'Marmita' ],
+            [ 'descricao' => 'Uber' ],
+            [ 'descricao' => 'Extras' ]
         ]);
+
+    }
+
+    public function permissaoSeed(){
 
         Permissao::insert([
             [ 'programa' => "PROG_CADASTRO", 'titulo' => "Programa de Cadastros", 'descricao' => "Cadastros" ],
@@ -73,6 +125,7 @@ class DatabaseSeeder extends Seeder
             ['papel_id' => 7, 'usuario_id' => 1 ],
         ]);
 
-
     }
+
+
 }

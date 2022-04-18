@@ -3,18 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\TipoCustoServico;
+use App\Models\TipoCusto;
 
-class TipoCustoServicoController extends Controller
+class TipoCustoController extends Controller
 {
     public function list(Request $request)
     {
         try{
 
-            $tipos = TipoCustoServico::where('ativo', true)->get();
+            $tipos = TipoCusto::where('ativo', true)->get();
             return response()->json($tipos);
 
-        }
+    }
         catch (\Throwable $th)
         {
             return response()->json($th->getMessage());
@@ -30,11 +30,11 @@ class TipoCustoServicoController extends Controller
 
             if (!isset($data['id'])) {
 
-                $tipo = TipoCustoServico::create($data);
+                $tipo = TipoCusto::create($data);
 
             } else {
 
-                $tipo = TipoCustoServico::find($data['id']);
+                $tipo = TipoCusto::find($data['id']);
                 $tipo->update($data);
 
             }
@@ -47,24 +47,24 @@ class TipoCustoServicoController extends Controller
         }
     }
 
-    public function getTipoCustoServico(Request $request, $id)
+    public function getTipoCusto(Request $request, $id)
     {
         try {
-            $tipo = TipoCustoServico::find($id);
+            $tipo = TipoCusto::find($id);
             return response()->json($tipo);
         } catch (\Exception $e) {
             return response()->json($e->getMessage());
         }
     }
 
-    public function deleteTipoCustoServico($id)
+    public function deleteTipoCusto($id)
     {
         try {
 
-            $tipo = TipoCustoServico::find($id);
+            $tipo = TipoCusto::find($id);
             $tipo->update(['ativo' => false]);
 
-            $tipos = TipoCustoServico::where('ativo', true)->get();
+            $tipos = TipoCusto::where('ativo', true)->get();
             return response()->json($tipos);
 
         } catch (\Throwable $th) {

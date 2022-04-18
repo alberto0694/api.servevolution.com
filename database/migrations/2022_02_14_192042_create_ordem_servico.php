@@ -17,9 +17,9 @@ class CreateOrdemServico extends Migration
             $table->id();
             $table->string('titulo')->nullable();
             $table->longText('descricao')->nullable();
-            $table->boolean('ativo')->default(true);
             $table->integer('tipo_servico_id');
             $table->integer('cliente_id');
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
 
             $table->foreign('tipo_servico_id')->references('id')->on('tipo_servico');

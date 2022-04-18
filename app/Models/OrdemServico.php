@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Funcionario;
 use App\Models\OrdemServicoFuncionario;
+use App\Models\OrdemServicoCusto;
+use App\Models\TipoCusto;
 
 class OrdemServico extends Model
 {
@@ -26,5 +28,12 @@ class OrdemServico extends Model
     {
         return $this->belongsToMany(Funcionario::class, OrdemServicoFuncionario::class);
     }
+
+    public function custos()
+    {
+        return $this->hasManyThrough(OrdemServicoCusto::class, OrdemServicoFuncionario::class);
+    }
+
+
 
 }

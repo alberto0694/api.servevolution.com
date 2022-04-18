@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\FuncionarioController;
 use App\Http\Controllers\TipoServicoController;
+use App\Http\Controllers\TipoCustoController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\OrdemServicoController;
 
@@ -65,14 +66,14 @@ Route::group([
 Route::group([
 
     'middleware' => 'jwt.auth',
-    'prefix' => 'tipo-custo-servicos'
+    'prefix' => 'tipo-custos'
 
 ], function ($router) {
 
-    Route::get('/list', [ TipoCustoServicoController::class, 'list' ]);
-    Route::post('/createOrUpdate', [ TipoCustoServicoController::class, 'createOrUpdate' ]);
-    Route::get('/delete/{id}', [ TipoCustoServicoController::class, 'deleteTipoCustoServico' ]);
-    Route::get('/get/{id}', [ TipoCustoServicoController::class, 'getTipoCustoServico' ]);
+    Route::get('/list', [ TipoCustoController::class, 'list' ]);
+    Route::post('/createOrUpdate', [ TipoCustoController::class, 'createOrUpdate' ]);
+    Route::get('/delete/{id}', [ TipoCustoController::class, 'deleteTipoCusto' ]);
+    Route::get('/get/{id}', [ TipoCustoController::class, 'getTipoCusto' ]);
 
 });
 
@@ -101,6 +102,8 @@ Route::group([
     Route::post('/createOrUpdate', [ OrdemServicoController::class, 'createOrUpdate' ]);
     Route::get('/delete/{id}', [ OrdemServicoController::class, 'deleteOrdemServico' ]);
     Route::get('/get/{id}', [ OrdemServicoController::class, 'getOrdemServico' ]);
+
+    Route::post('/funcionario/delete/{ordem_servico_id}/{funcionario_id}', [ OrdemServicoController::class, 'deleteFuncionarioOrdemServico' ]);
 
 });
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTipoCustoServico extends Migration
+class CreateTipoCusto extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateTipoCustoServico extends Migration
      */
     public function up()
     {
-        Schema::create('tipo_custo_servico', function (Blueprint $table) {
+        Schema::create('tipo_custo', function (Blueprint $table) {
             $table->id();
             $table->string('descricao');
             $table->boolean('ativo')->default(true);
@@ -28,6 +28,6 @@ class CreateTipoCustoServico extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipo_custo_servico');
+        Schema::dropIfExists('tipo_custo');
     }
 }
