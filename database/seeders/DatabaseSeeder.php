@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
 
     public function fakeDataSeed(){
 
-        $faker = Faker\Factory::create();
+        $faker = \Faker\Factory::create();
         $clientes = Pessoa::factory()
                         ->count(30)
                         ->create()
