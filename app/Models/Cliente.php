@@ -19,7 +19,7 @@ class Cliente extends Model
 
     public function ordemServicos()
     {
-        return $this->hasManyThrough(OrdemServico::class, OrdemServicoCliente::class);
+        return $this->hasMany(OrdemServico::class);
     }
 
     public function pessoa()

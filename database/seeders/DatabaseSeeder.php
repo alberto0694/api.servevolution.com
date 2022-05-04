@@ -34,6 +34,19 @@ class DatabaseSeeder extends Seeder
     public function fakeDataSeed(){
 
         $faker = \Faker\Factory::create();
+
+        $colaboradores = Pessoa::factory()
+                        ->count(30)
+                        ->create()
+                        ->each(function($pessoa) use($faker) {
+                            $pessoa->colaboradores()->save(new Colaborador());
+                            $pessoa->usuarios()->save(new Usuario([
+                                'name' => $pessoa->razao ?? $pessoa->apelido,
+                                'email' => $faker->email(),
+                                'password' => bcrypt('123456')
+                            ]));
+                        });
+
         $clientes = Pessoa::factory()
                         ->count(30)
                         ->create()
@@ -51,18 +64,6 @@ class DatabaseSeeder extends Seeder
                         ->create()
                         ->each(function($pessoa){
                             $pessoa->funcionarios()->save(new Funcionario());
-                        });
-
-        $colaboradores = Pessoa::factory()
-                        ->count(30)
-                        ->create()
-                        ->each(function($pessoa) use($faker) {
-                            $pessoa->colaboradores()->save(new Colaborador());
-                            $pessoa->usuarios()->save(new Usuario([
-                                'name' => $pessoa->razao ?? $pessoa->apelido,
-                                'email' => $faker->email(),
-                                'password' => bcrypt('123456')
-                            ]));
                         });
 
 
@@ -102,6 +103,10 @@ class DatabaseSeeder extends Seeder
             [ 'permissao_id' => 2, 'acao' => "LISTAR_ORDEM_SERVICOS", 'descricao' => "Inativa uma pessoa existente no sistema." ],
             [ 'permissao_id' => 2, 'acao' => "INSERIR_ORDEM_SERVICO", 'descricao' => "Relatórios de gestao de pessoas." ],
             [ 'permissao_id' => 2, 'acao' => "INSERIR_ORDEM_SERVICO", 'descricao' => "Relatórios de gestao de pessoas." ],
+
+            [ 'permissao_id' => 3, 'acao' => "LISTAR_ORDEM_SERVICOS_CLIENTE", 'descricao' => "Inativa uma pessoa existente no sistema." ],
+            [ 'permissao_id' => 3, 'acao' => "VISUALIZAR_ORDEM_SERVICOS_CLIENTE", 'descricao' => "Inativa uma pessoa existente no sistema." ],
+
         ]);
 
         Menu::insert([
@@ -113,6 +118,9 @@ class DatabaseSeeder extends Seeder
 
             ['titulo' => "Ordem de Serviço", 'nivel' => 1, 'papel_id' => 7, 'menu_pai_id' => null, 'rota' => null, 'icone' => "endereco-white28x28", 'icone_aux' => "endereco28x28" ],
             ['titulo' => "Agendamentos", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 6, 'rota' => "/app/ordem-servicos/agendamentos", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
+
+            ['titulo' => "Área do Cliente", 'nivel' => 1, 'papel_id' => 8, 'menu_pai_id' => null, 'rota' => null, 'icone' => "endereco-white28x28", 'icone_aux' => "endereco28x28" ],
+            ['titulo' => "Agendamentos", 'nivel' => 2, 'papel_id' => 8, 'menu_pai_id' => 8, 'rota' => "/app/cliente/agendamentos", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
         ]);
 
         PapelUsuario::insert([
@@ -123,6 +131,8 @@ class DatabaseSeeder extends Seeder
             ['papel_id' => 5, 'usuario_id' => 1 ],
             ['papel_id' => 6, 'usuario_id' => 1 ],
             ['papel_id' => 7, 'usuario_id' => 1 ],
+
+            ['papel_id' => 8, 'usuario_id' => 31 ], //cliente
         ]);
 
     }

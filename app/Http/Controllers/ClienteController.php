@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Cliente;
 use App\Models\Pessoa;
 use App\Models\Usuario;
+use App\Models\OrdemServico;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 
 class ClienteController extends Controller
 {
@@ -93,6 +96,50 @@ class ClienteController extends Controller
 
         } catch (\Throwable $e) {
             return response()->json($e->getMessage());
+        }
+    }
+
+    public function listOrdemServico(Request $request, $cliente_id)
+    {
+        try{
+
+            $ordem_servicos = OrdemServico::where('ativo', true)
+                                    ->with('funcionarios')
+                                    ->with('custos')
+                                    ->where('cliente_id', $cliente_id)
+                                    ->get();
+
+            return response()->json($ordem_servicos);
+
+        }
+        catch (\Throwable $th)
+        {
+            return response()->json($th->getMessage());
+        }
+    }
+
+    public function listOrdemServicoKanban(Request $request, $cliente_id)
+    {
+        try{
+
+            $from = Carbon::now();
+            $to = Carbon::now()->addDays(10);
+            $period = CarbonPeriod::between($from, $to);
+
+            $dates = [];
+            foreach ($period as $key => $date) {
+                $result = new \stdClass();
+                $result->id = $key;
+                $result->data = $date->format("d/m/Y");
+                $result->cards = OrdemServico::whereDate('data', $date->format("Y-m-d"))->get();
+                array_push($dates, $result);
+            }
+
+            return response()->json($dates);
+        }
+        catch (\Throwable $th)
+        {
+            return response()->json($th->getMessage());
         }
     }
 

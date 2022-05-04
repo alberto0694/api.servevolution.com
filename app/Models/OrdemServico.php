@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Funcionario;
 use App\Models\OrdemServicoFuncionario;
 use App\Models\OrdemServicoCusto;
-use App\Models\TipoCusto;
+use App\Models\TipoServico;
+use App\Models\Cliente;
 
 class OrdemServico extends Model
 {
@@ -17,12 +18,19 @@ class OrdemServico extends Model
 
     protected $fillable = [
         'id',
-        'titulo',
+        'data',
+        'hora',
         'descricao',
         'tipo_servico_id',
         'cliente_id',
         'ativo'
     ];
+
+    protected $appends = ['titulo'];
+
+    public function getTituloAttribute(){
+        return ($this->cliente->pessoa->razao ?? $this->cliente->pessoa->apelido) . " #" . $this->servico?->descricao;
+    }
 
     public function funcionarios()
     {
@@ -34,6 +42,15 @@ class OrdemServico extends Model
         return $this->hasManyThrough(OrdemServicoCusto::class, OrdemServicoFuncionario::class);
     }
 
+    public function cliente()
+    {
+        return $this->belongsTo(Cliente::class);
+    }
+
+    public function servico()
+    {
+        return $this->belongsTo(TipoServico::class, 'tipo_servico_id', 'id');
+    }
 
 
 }

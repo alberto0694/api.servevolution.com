@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Usuario;
+use App\Models\Cliente;
 use Validator;
 
 class UsuarioController extends Controller
@@ -83,12 +84,17 @@ class UsuarioController extends Controller
     protected function createNewToken($token){
 
         $menu = $this->getUsuarioMenu(auth()->user());
+        $cliente = Cliente::where('pessoa_id', auth()->user()->pessoa_id)->get();
+        $count = count($cliente);
+        $type = $count > 0 ? "cliente" : "colaborador";
 
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => 2592000,
             'usuario' => auth()->user(),
+            'tipo' => $type,
+            'cliente' => $cliente,
             'menu' => $menu
         ]);
     }

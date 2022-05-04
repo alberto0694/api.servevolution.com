@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\OrdemServico;
 use App\Models\OrdemServicoCusto;
+use App\Models\Cliente;
 use App\Models\OrdemServicoFuncionario;
 
 class OrdemServicoController extends Controller
@@ -19,6 +20,25 @@ class OrdemServicoController extends Controller
                                     ->get();
 
             return response()->json($ordem_servicos);
+
+        }
+        catch (\Throwable $th)
+        {
+            return response()->json($th->getMessage());
+        }
+    }
+
+    public function listKanban(Request $request)
+    {
+        try{
+
+            $clientes = Cliente::where('ativo', true)
+                            ->with('pessoa')
+                            ->with('ordemServicos.funcionarios')
+                            ->with('ordemServicos.custos')
+                            ->get();
+
+            return response()->json($clientes);
 
         }
         catch (\Throwable $th)
