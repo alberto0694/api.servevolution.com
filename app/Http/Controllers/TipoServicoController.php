@@ -4,20 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\TipoServico;
+use App\Helpers\ErrorResponse;
 
 class TipoServicoController extends Controller
 {
     public function list(Request $request)
     {
-        try{
+        try {
 
             $tipos = TipoServico::where('ativo', true)->get();
             return response()->json($tipos);
-
-        }
-        catch (\Throwable $th)
-        {
-            return response()->json($th->getMessage());
+        } catch (\Throwable $th) {
+            return response()->json(new ErrorResponse($th->getMessage()));
         }
     }
 
@@ -31,19 +29,16 @@ class TipoServicoController extends Controller
             if (!isset($data['id'])) {
 
                 $tipo = TipoServico::create($data);
-
             } else {
 
                 $tipo = TipoServico::find($data['id']);
                 $tipo->update($data);
-
             }
 
             return response()->json($tipo);
-
         } catch (\Throwable $th) {
 
-            return response()->json($th->getMessage());
+            return response()->json(new ErrorResponse($th->getMessage()));
         }
     }
 
@@ -52,8 +47,8 @@ class TipoServicoController extends Controller
         try {
             $tipo = TipoServico::find($id);
             return response()->json($tipo);
-        } catch (\Exception $e) {
-            return response()->json($e->getMessage());
+        } catch (\Throwable $e) {
+            return response()->json(new ErrorResponse($e->getMessage()));
         }
     }
 
@@ -66,10 +61,8 @@ class TipoServicoController extends Controller
 
             $tipos = TipoServico::where('ativo', true)->get();
             return response()->json($tipos);
-
-        } catch (\Throwable $th) {
-            //throw $th;
+        } catch (\Throwable $e) {
+            return response()->json(new ErrorResponse($e->getMessage()));
         }
     }
-
 }

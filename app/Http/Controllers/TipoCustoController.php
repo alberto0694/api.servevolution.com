@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\TipoCusto;
+use App\Helpers\ErrorResponse;
 
 class TipoCustoController extends Controller
 {
@@ -17,7 +18,7 @@ class TipoCustoController extends Controller
     }
         catch (\Throwable $th)
         {
-            return response()->json($th->getMessage());
+            return response()->json(new ErrorResponse($th->getMessage()));
         }
     }
 
@@ -43,7 +44,7 @@ class TipoCustoController extends Controller
 
         } catch (\Throwable $th) {
 
-            return response()->json($th->getMessage());
+            return response()->json(new ErrorResponse($th->getMessage()));
         }
     }
 
@@ -52,7 +53,7 @@ class TipoCustoController extends Controller
         try {
             $tipo = TipoCusto::find($id);
             return response()->json($tipo);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json($e->getMessage());
         }
     }

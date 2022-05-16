@@ -89,9 +89,6 @@ Route::group([
     Route::get('/delete/{id}', [ ClienteController::class, 'deleteCliente' ]);
     Route::get('/get/{id}', [ ClienteController::class, 'getCliente' ]);
 
-    Route::get('/list/ordem-servicos/{cliente_id}', [ ClienteController::class, 'listOrdemServico' ]);
-    Route::get('/list/ordem-servicos/kanban/{cliente_id}', [ ClienteController::class, 'listOrdemServicoKanban' ]);
-
 });
 
 Route::group([
@@ -101,13 +98,13 @@ Route::group([
 
 ], function ($router) {
 
-    Route::get('/list', [ OrdemServicoController::class, 'list' ]);
+    Route::post('/list', [ OrdemServicoController::class, 'list' ]);
     Route::post('/createOrUpdate', [ OrdemServicoController::class, 'createOrUpdate' ]);
     Route::get('/delete/{id}', [ OrdemServicoController::class, 'deleteOrdemServico' ]);
     Route::get('/get/{id}', [ OrdemServicoController::class, 'getOrdemServico' ]);
 
     Route::post('/funcionario/delete/{ordem_servico_id}/{funcionario_id}', [ OrdemServicoController::class, 'deleteFuncionarioOrdemServico' ]);
-    Route::get('/list-kanban', [ OrdemServicoController::class, 'listKanban' ]);
+    Route::post('/list-kanban', [ OrdemServicoController::class, 'listKanban' ]);
 });
 
 

@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OrdemServicoTipo extends Model
+class FuncionarioTipoServico extends Model
 {
     use HasFactory;
 
-    protected $table = 'ordem_servico_tipo';
+    protected $table = 'funcionario_tipo_servico';
 
     protected $fillable = [
         'id',
-        'ordem_servico_id',
+        'funcionario_id',
         'tipo_servico_id'
     ];
 

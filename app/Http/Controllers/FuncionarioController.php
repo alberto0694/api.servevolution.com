@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Funcionario;
 use App\Models\Pessoa;
+use App\Helpers\ErrorResponse;
+use App\Models\FuncionarioTipoServico;
 
 class FuncionarioController extends Controller
 {
@@ -18,9 +20,9 @@ class FuncionarioController extends Controller
                                     ->get();
 
             return response()->json($funcionarios);
-        } catch (\Throwable $th) {
 
-            return response()->json($th->getMessage());
+        } catch (\Throwable $th) {
+            return response()->json(new ErrorResponse($th->getMessage()));
         }
     }
 
@@ -47,20 +49,30 @@ class FuncionarioController extends Controller
 
             }
 
+            $tpServicosFunc = FuncionarioTipoServico::where('funcionario_id', $funcionario->id);
+            $tpServicosFunc->delete();
+
+            foreach ($data['tipo_servicos'] as $tpServ) {
+                FuncionarioTipoServico::create([
+                    'funcionario_id' => $funcionario->id,
+                    'tipo_servico_id' => $tpServ['id']
+                ]);
+            }
+
             return response()->json($funcionario);
 
         } catch (\Throwable $th) {
 
-            return response()->json($th->getMessage());
+            return response()->json(new ErrorResponse($th->getMessage()));
         }
     }
 
     public function getFuncionario(Request $request, $id)
     {
         try {
-            $funcionario = Funcionario::with('pessoa')->find($id);
+            $funcionario = Funcionario::with(['pessoa', 'tipoServicos'])->find($id);
             return response()->json($funcionario);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json($e->getMessage());
         }
     }
@@ -71,9 +83,14 @@ class FuncionarioController extends Controller
 
             $funcionario = Funcionario::find($id);
             $funcionario->update(['ativo' => false]);
+            $funcionarios = Funcionario::with(['pessoa'])
+                                    ->where('ativo', true)
+                                    ->get();
+            return response()->json($funcionarios);
 
         } catch (\Throwable $e) {
             return response()->json($e->getMessage());
         }
     }
+
 }

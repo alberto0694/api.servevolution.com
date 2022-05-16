@@ -21,6 +21,7 @@ class OrdemServico extends Model
         'data',
         'hora',
         'descricao',
+        'status',
         'tipo_servico_id',
         'cliente_id',
         'ativo'
@@ -28,7 +29,8 @@ class OrdemServico extends Model
 
     protected $appends = ['titulo'];
 
-    public function getTituloAttribute(){
+    public function getTituloAttribute()
+    {
         return ($this->cliente->pessoa->razao ?? $this->cliente->pessoa->apelido) . " #" . $this->servico?->descricao;
     }
 

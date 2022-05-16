@@ -14,6 +14,7 @@ use App\Models\Permissao\Permissao;
 use App\Models\Permissao\Papel;
 use App\Models\Permissao\Menu;
 use App\Models\Permissao\PapelUsuario;
+use App\Models\OrdemServico;
 use Faker;
 
 class DatabaseSeeder extends Seeder
@@ -80,6 +81,15 @@ class DatabaseSeeder extends Seeder
             [ 'descricao' => 'Uber' ],
             [ 'descricao' => 'Extras' ]
         ]);
+
+        $ordens = OrdemServico::factory()
+                    ->count(150)
+                    ->create();
+                    // ->each(function($ordem) {
+                    //     $ordem->cliente_id = rand(1, 30);
+                    //     $ordem->tipo_servico_id = rand(1, 5);
+                    //     $ordem->tipo_servico_id = rand(1, 5);
+                    // })
 
     }
 

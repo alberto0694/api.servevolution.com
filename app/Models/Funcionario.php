@@ -17,6 +17,11 @@ class Funcionario extends Model
         'ativo'
     ];
 
+    public function tipoServicos()
+    {
+        return $this->belongsToMany(TipoServico::class, FuncionarioTipoServico::class);
+    }
+
     public function pessoa()
     {
         return $this->belongsTo(Pessoa::class, 'pessoa_id');
