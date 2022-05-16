@@ -107,16 +107,17 @@ class OrdemServicoController extends Controller
         }
     }
 
-    public function deleteFuncionarioOrdemServico(Request $request, $ordem_servico_id, $funcionario_id)
+    public function deleteFuncionarioOrdemServico($ordem_servico_id, $funcionario_id)
     {
         try {
 
-            $ordem_servico = $this->saveOrdemServico($request->all());
-
             $ordem_servico_func = OrdemServicoFuncionario::where('ordem_servico_id', $ordem_servico_id)
-                ->where('funcionario_id', $funcionario_id)
-                ->first();
+                ->where('funcionario_id', $funcionario_id);
 
+            $ordem_servico_custos = OrdemServicoFuncionario::where('ordem_servico_funcionario_id', $ordem_servico_func->id);
+            if (!empty($ordem_servico_custos)) {
+                $ordem_servico_custos->delete();
+            }
 
 
             if (!empty($ordem_servico_func)) {
@@ -125,7 +126,7 @@ class OrdemServicoController extends Controller
 
             $ordem_servico =  OrdemServico::with('funcionarios.pessoa')
                 ->with('custos.ordemServicoFuncionario')
-                ->find($ordem_servico->id);
+                ->find($ordem_servico_id);
 
             return response()->json($ordem_servico);
         } catch (\Throwable $e) {
