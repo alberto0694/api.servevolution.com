@@ -42,7 +42,7 @@ class ClienteController extends Controller
                     'name' => $pessoa->razao ?? $pessoa->apelido,
                     'email' => $pessoa->email,
                     'pessoa_id' => $pessoa->id,
-                    'password' => bcrypt($data['senha'])
+                    'password' => bcrypt($data['senha'] ?? '')
                 ]);
 
             } else {
@@ -60,7 +60,7 @@ class ClienteController extends Controller
                     'pessoa_id' => $pessoa->id
                 ]);
 
-                if(!isset($data['senha'])){
+                if(isset($data['senha'])){
                     $usuario ->update([
                         'password' => bcrypt($data['senha'])
                     ]);
