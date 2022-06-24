@@ -23,6 +23,15 @@ class Pessoa extends Model
         'ativo'
     ];
 
+    protected $appends = [
+        'normalized_name',
+    ];
+
+    public function getNormalizedNameAttribute()
+    {
+        return !empty($this->razao) ? $this->razao : $this->apelido;
+    }
+
     public function clientes()
     {
         return $this->hasMany(Cliente::class);

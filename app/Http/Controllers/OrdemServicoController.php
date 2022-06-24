@@ -5,14 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\OrdemServico;
 use App\Models\OrdemServicoCusto;
-use App\Models\Cliente;
 use App\Models\OrdemServicoFuncionario;
 use Carbon\Carbon;
-use Carbon\CarbonPeriod;
 use App\Helpers\ErrorResponse;
 
 class OrdemServicoController extends Controller
 {
+
     public function list(Request $request)
     {
         try {
@@ -42,27 +41,26 @@ class OrdemServicoController extends Controller
                 $ordem_servicos->whereIn('tipo_servico_id', $body['servicos']);
             }
 
-            return response()->json($ordem_servicos->get());
-        } catch (\Throwable $th) {
-            return response()->json(new ErrorResponse($th->getMessage()));
-        }
-    }
-
-    public function listKanban(Request $request)
-    {
-        try {
-
-            $cliente_id = $request->query('cliente_id');
-
-            if (empty($cliente_id)) {
-
-                $kanban = $this->getListKanbanByAll($request->all());
-                return response()->json($kanban);
-            } else {
-
-                $kanban = $this->getListKanbanByCliente($cliente_id, $request->all());
-                return response()->json($kanban);
+            if (!empty($body['funcionarios']) && count($body['funcionarios']) > 0) {
+                $ordem_servicos->whereHas('funcionarios', function($query) use($body) {
+                    $query->whereIn('funcionario.id', $body['funcionarios']);
+                });
             }
+
+            $kanbanList = [];
+            $ordem_servicos = $ordem_servicos->orderBy('data', 'asc')->get();
+            collect($ordem_servicos)->each(function($order) use (&$kanbanList) {
+                $date = Carbon::parse($order->data);
+                $index = $date->day . '_' . $date->month . '_' . $date->year;
+                $kanbanList[$index] = empty($kanbanList[$index]) ? ['id' => $index, 'titulo' => $date->format('d/m/Y'), 'cards' => []] : $kanbanList[$index];
+                array_push($kanbanList[$index]['cards'], $order);
+            });
+
+            return response()->json([
+                'kanban' => collect($kanbanList)->values(),
+                'list' => $ordem_servicos
+            ]);
+
         } catch (\Throwable $th) {
             return response()->json(new ErrorResponse($th->getMessage()));
         }
@@ -107,96 +105,24 @@ class OrdemServicoController extends Controller
         }
     }
 
-    public function deleteFuncionarioOrdemServico($ordem_servico_id, $funcionario_id)
+    public function deleteFuncionarioOrdemServico(Request $request, $ordem_servico_id)
     {
         try {
 
             $ordem_servico_func = OrdemServicoFuncionario::where('ordem_servico_id', $ordem_servico_id)
-                ->where('funcionario_id', $funcionario_id);
+                ->whereIn('funcionario_id', $request->all()['funcionarios_id']);
 
-            $ordem_servico_custos = OrdemServicoFuncionario::where('ordem_servico_funcionario_id', $ordem_servico_func->id);
-            if (!empty($ordem_servico_custos)) {
-                $ordem_servico_custos->delete();
-            }
+            $ids = collect($ordem_servico_func->get())->map(fn($f) => $f->id);
+            OrdemServicoCusto::whereIn('ordem_servico_funcionario_id', $ids)->delete();
+            $ordem_servico_func->delete();
 
-
-            if (!empty($ordem_servico_func)) {
-                $ordem_servico_func->delete();
-            }
-
-            $ordem_servico =  OrdemServico::with('funcionarios.pessoa')
-                ->with('custos.ordemServicoFuncionario')
+            $ordem_servico = OrdemServico::with('funcionarios.pessoa')
                 ->find($ordem_servico_id);
 
-            return response()->json($ordem_servico);
+            return response()->json($ordem_servico->funcionarios);
         } catch (\Throwable $e) {
             return response()->json(new ErrorResponse($e->getMessage()));
         }
-    }
-
-    private function getListKanbanByCliente($cliente_id)
-    {
-        $from = Carbon::now();
-        $to = Carbon::now()->addDays(10);
-        $period = CarbonPeriod::between($from, $to);
-
-        return collect($period)->map(function ($date, $index) {
-            $result = new \stdClass();
-            $result->id = $index;
-            $result->titulo = $date->format("d/m/Y");
-            $result->cards = OrdemServico::with(['funcionarios.pessoa', 'custos'])->whereDate('data', $date->format("Y-m-d"))->get();
-            return $result;
-        });
-    }
-
-    private function getListKanbanByAll($body)
-    {
-        $hasFilterServico = !empty($body['servicos']) && count($body['servicos']) > 0;
-        $hasFilterFuncionario = !empty($body['funcionarios']) && count($body['funcionarios']) > 0;
-
-        $clientes = Cliente::with(['pessoa'])
-            ->with('ordemServicos', function ($query) use ($body, $hasFilterServico) {
-                if (!empty($body['dataInicial'])) {
-                    $date = Carbon::parse($body['dataInicial']);
-                    $query->whereDate('data', '>=', $date->format('Y-m-d'));
-                }
-
-                if (!empty($body['dataFinal'])) {
-                    $date = Carbon::parse($body['dataFinal']);
-                    $query->whereDate('data', '<=', $date->format('Y-m-d'));
-                }
-
-                if ($hasFilterServico) {
-                    $query->whereIn('tipo_servico_id', $body['servicos']);
-                }
-
-                $query->with(['custos', 'funcionarios.pessoa']);
-            })
-            ->where('ativo', true);
-
-        return collect($clientes->get())
-            ->map(function ($cliente, $index) {
-                $result = new \stdClass();
-                $result->id = $index;
-                $result->titulo = $cliente->pessoa->razao ?? $cliente->pessoa->apelido;
-                $result->cards = $cliente->ordemServicos;
-                return $result;
-            })
-            ->filter(function ($cliente) use ($body, $hasFilterFuncionario) {
-
-                if ($hasFilterFuncionario) {
-
-                    $cards = collect($cliente->cards)->filter(function ($card)  use ($body) {
-                        return count(collect($card['funcionarios'])->filter(function ($funcionario) use ($body) {
-                            return in_array($funcionario->id, $body['funcionarios']);
-                        })) > 0;
-                    });
-
-                    $cliente->cards = $cards;
-                }
-
-                return count($cliente->cards) > 0;
-            })->values();
     }
 
     private function saveOrdemServico($data)

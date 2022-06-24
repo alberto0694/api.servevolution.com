@@ -24,6 +24,7 @@ class OrdemServico extends Model
         'status',
         'tipo_servico_id',
         'cliente_id',
+        'valor',
         'ativo'
     ];
 

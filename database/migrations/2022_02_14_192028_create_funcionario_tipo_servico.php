@@ -17,10 +17,13 @@ class CreateFuncionarioTipoServico extends Migration
             $table->id();
             $table->integer('tipo_servico_id');
             $table->integer('funcionario_id');
+            $table->integer('unidade_medida_id');
+            $table->float('valor_cobrado')->default(0);
             $table->timestamps();
 
             $table->foreign('tipo_servico_id')->references('id')->on('tipo_servico');
             $table->foreign('funcionario_id')->references('id')->on('funcionario');
+            $table->foreign('unidade_medida_id')->references('id')->on('unidade_medida');
 
         });
     }

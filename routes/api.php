@@ -7,6 +7,10 @@ use App\Http\Controllers\TipoServicoController;
 use App\Http\Controllers\TipoCustoController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\OrdemServicoController;
+use App\Http\Controllers\UnidadeMedidaController;
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +84,20 @@ Route::group([
 Route::group([
 
     'middleware' => 'jwt.auth',
+    'prefix' => 'unidade-medida'
+
+], function ($router) {
+
+    Route::get('/list', [ UnidadeMedidaController::class, 'list' ]);
+    Route::post('/createOrUpdate', [ UnidadeMedidaController::class, 'createOrUpdate' ]);
+    Route::get('/delete/{id}', [ UnidadeMedidaController::class, 'deleteUnidadeMedida' ]);
+    Route::get('/get/{id}', [ UnidadeMedidaController::class, 'getUnidadeMedida' ]);
+
+});
+
+Route::group([
+
+    'middleware' => 'jwt.auth',
     'prefix' => 'clientes'
 
 ], function ($router) {
@@ -103,7 +121,7 @@ Route::group([
     Route::get('/delete/{id}', [ OrdemServicoController::class, 'deleteOrdemServico' ]);
     Route::get('/get/{id}', [ OrdemServicoController::class, 'getOrdemServico' ]);
 
-    Route::post('/funcionario/delete/{ordem_servico_id}/{funcionario_id}', [ OrdemServicoController::class, 'deleteFuncionarioOrdemServico' ]);
+    Route::post('/funcionario/delete/{ordem_servico_id}', [ OrdemServicoController::class, 'deleteFuncionarioOrdemServico' ]);
     Route::post('/list-kanban', [ OrdemServicoController::class, 'listKanban' ]);
 });
 

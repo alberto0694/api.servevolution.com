@@ -55,7 +55,8 @@ class FuncionarioController extends Controller
             foreach ($data['tipo_servicos'] as $tpServ) {
                 FuncionarioTipoServico::create([
                     'funcionario_id' => $funcionario->id,
-                    'tipo_servico_id' => $tpServ['id']
+                    'tipo_servico_id' => $tpServ['id'],
+                    'unidade_medida_id' => 1
                 ]);
             }
 

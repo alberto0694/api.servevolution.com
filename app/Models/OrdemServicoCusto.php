@@ -20,6 +20,8 @@ class OrdemServicoCusto extends Model
         'ativo'
     ];
 
+    protected $casts = [ 'valor' => 'float' ];
+
     public function ordemServicoFuncionario()
     {
         return $this->belongsTo(OrdemServicoFuncionario::class, 'ordem_servico_funcionario_id', 'id', 'ordem_servico_funcionario');

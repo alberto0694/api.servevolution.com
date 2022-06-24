@@ -17,6 +17,7 @@ class CreateOrdemServicoFuncionario extends Migration
             $table->id();
             $table->integer('funcionario_id');
             $table->integer('ordem_servico_id');
+            $table->float('valor_servico')->default(0);
             $table->timestamps();
 
             $table->foreign('funcionario_id')->references('id')->on('funcionario');

@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\TipoCusto;
+use App\Models\UnidadeMedida;
 use App\Models\TipoServico;
+use App\Models\OrdemServicoCusto;
 use Illuminate\Database\Seeder;
 use App\Models\Usuario;
 use App\Models\Funcionario;
@@ -15,6 +17,7 @@ use App\Models\Permissao\Papel;
 use App\Models\Permissao\Menu;
 use App\Models\Permissao\PapelUsuario;
 use App\Models\OrdemServico;
+use App\Models\OrdemServicoFuncionario;
 use Faker;
 
 class DatabaseSeeder extends Seeder
@@ -82,15 +85,27 @@ class DatabaseSeeder extends Seeder
             [ 'descricao' => 'Extras' ]
         ]);
 
-        $ordens = OrdemServico::factory()
-                    ->count(150)
-                    ->create();
-                    // ->each(function($ordem) {
-                    //     $ordem->cliente_id = rand(1, 30);
-                    //     $ordem->tipo_servico_id = rand(1, 5);
-                    //     $ordem->tipo_servico_id = rand(1, 5);
-                    // })
+        UnidadeMedida::insert([
+            [ 'descricao' => 'Hora' ],
+            [ 'descricao' => 'Diária' ],
+            [ 'descricao' => 'Noturno' ]
+        ]);
 
+        $ordens = OrdemServico::factory()
+                    ->count(60)
+                    ->create()
+                    ->each(function($ordem) use ($funcionarios){
+                        $keys = array_rand($funcionarios->toArray(), random_int(2, 5));
+                        collect(Funcionario::whereIn('id', $keys)->get())
+                            ->each(fn($f) => $ordem->funcionarios()->save($f));
+                    });
+
+        collect(OrdemServicoFuncionario::all())->each(function($osf) {
+            $osf->custos()->save(OrdemServicoCusto::create([
+                    'tipo_custo_id' => random_int(1, 3),
+                    'valor' => random_int(10, 20)
+                ]));
+        });
     }
 
     public function permissaoSeed(){
@@ -120,17 +135,28 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Menu::insert([
+
             ['titulo' => "Cadastros", 'nivel' => 1, 'papel_id' => 1, 'menu_pai_id' => null, 'rota' => null, 'icone' => "pessoa-edit-white28x28", 'icone_aux' => "pessoa-edit28x28" ],
             ['titulo' => "Funcionários", 'nivel' => 2, 'papel_id' => 1, 'menu_pai_id' => 1, 'rota' => "/app/funcionarios", 'icone' => "pessoa-white28x28", 'icone_aux' => "pessoa28x28" ],
             ['titulo' => "Tipos de Serviços", 'nivel' => 2, 'papel_id' => 2, 'menu_pai_id' => 1, 'rota' => "/app/tipo-servicos", 'icone' => "pessoa-white28x28", 'icone_aux' => "pessoa28x28" ],
+            ['titulo' => "Tipos de Custos", 'nivel' => 2, 'papel_id' => 2, 'menu_pai_id' => 1, 'rota' => "/app/tipo-custos", 'icone' => "pessoa-white28x28", 'icone_aux' => "pessoa28x28" ],
             ['titulo' => "Clientes", 'nivel' => 2, 'papel_id' => 2, 'menu_pai_id' => 1, 'rota' => "/app/clientes", 'icone' => "pessoa-white28x28", 'icone_aux' => "pessoa28x28" ],
+            ['titulo' => "Unidades de Medida", 'nivel' => 2, 'papel_id' => 2, 'menu_pai_id' => 1, 'rota' => "/app/unidade-medida", 'icone' => "pessoa-white28x28", 'icone_aux' => "pessoa28x28" ],
             ['titulo' => "Tabelas de Preço", 'nivel' => 2, 'papel_id' => 2, 'menu_pai_id' => 1, 'rota' => "/app/tabelas-preco", 'icone' => "pessoa-white28x28", 'icone_aux' => "pessoa28x28" ],
 
             ['titulo' => "Ordem de Serviço", 'nivel' => 1, 'papel_id' => 7, 'menu_pai_id' => null, 'rota' => null, 'icone' => "endereco-white28x28", 'icone_aux' => "endereco28x28" ],
-            ['titulo' => "Agendamentos", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 6, 'rota' => "/app/ordem-servicos/agendamentos", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
+            ['titulo' => "Agendamentos", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 8, 'rota' => "/app/ordem-servicos/agendamentos", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
+
+            ['titulo' => "Financeiro", 'nivel' => 1, 'papel_id' => 7, 'menu_pai_id' => null, 'rota' => null, 'icone' => "endereco-white28x28", 'icone_aux' => "endereco28x28" ],
+            ['titulo' => "Pagamento Funcionário", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 10, 'rota' => "/app/financeiro/pagamento-funcionario", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
+            ['titulo' => "Conta à Pagar", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 10, 'rota' => "/app/financeiro/contas-pagar", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
+            ['titulo' => "Conta à Receber", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 10, 'rota' => "/app/financeiro/contas-receber", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
+
+            ['titulo' => "Relatórios", 'nivel' => 1, 'papel_id' => 7, 'menu_pai_id' => null, 'rota' => null, 'icone' => "endereco-white28x28", 'icone_aux' => "endereco28x28" ],
+            ['titulo' => "Serviços Prestados", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 14, 'rota' => "/app/relatorios/servicos-prestados", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
 
             ['titulo' => "Área do Cliente", 'nivel' => 1, 'papel_id' => 8, 'menu_pai_id' => null, 'rota' => null, 'icone' => "endereco-white28x28", 'icone_aux' => "endereco28x28" ],
-            ['titulo' => "Agendamentos", 'nivel' => 2, 'papel_id' => 8, 'menu_pai_id' => 8, 'rota' => "/app/cliente/agendamentos", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
+            ['titulo' => "Agendamentos", 'nivel' => 2, 'papel_id' => 8, 'menu_pai_id' => 16, 'rota' => "/app/cliente/agendamentos", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
         ]);
 
         PapelUsuario::insert([
