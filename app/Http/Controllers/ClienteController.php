@@ -14,6 +14,7 @@ class ClienteController extends Controller
     {
         try{
 
+            
             $clientes = Cliente::where('ativo', true)->with('pessoa')->get();
             return response()->json($clientes);
 
