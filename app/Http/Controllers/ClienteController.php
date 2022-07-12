@@ -13,7 +13,6 @@ class ClienteController extends Controller
     public function list(Request $request)
     {
         try{
-
             
             $clientes = Cliente::where('ativo', true)->with('pessoa')->get();
             return response()->json($clientes);

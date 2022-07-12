@@ -16,7 +16,6 @@ class CreateOrdemServico extends Migration
         Schema::create('ordem_servico', function (Blueprint $table) {
             $table->id();
             $table->longText('descricao')->nullable();
-            $table->string('status')->nullable();
             $table->date('data')->nullable();
             $table->time('hora')->nullable();
             $table->integer('tipo_servico_id');

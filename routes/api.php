@@ -8,7 +8,7 @@ use App\Http\Controllers\TipoCustoController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\OrdemServicoController;
 use App\Http\Controllers\UnidadeMedidaController;
-
+use App\Http\Controllers\TituloController;
 
 
 
@@ -119,10 +119,23 @@ Route::group([
     Route::post('/list', [ OrdemServicoController::class, 'list' ]);
     Route::post('/createOrUpdate', [ OrdemServicoController::class, 'createOrUpdate' ]);
     Route::get('/delete/{id}', [ OrdemServicoController::class, 'deleteOrdemServico' ]);
+    Route::get('/finalizar/{id}', [ OrdemServicoController::class, 'finalizarOrdemServico' ]);
     Route::get('/get/{id}', [ OrdemServicoController::class, 'getOrdemServico' ]);
 
     Route::post('/funcionario/delete/{ordem_servico_id}', [ OrdemServicoController::class, 'deleteFuncionarioOrdemServico' ]);
     Route::post('/list-kanban', [ OrdemServicoController::class, 'listKanban' ]);
+});
+
+Route::group([
+
+    'middleware' => 'jwt.auth',
+    'prefix' => 'titulo'
+
+], function ($router) {
+
+    Route::post('/ordem-servicos', [ TituloController::class, 'ordemServicoList' ]);
+    Route::post('/ordem-servicos/gerar', [ TituloController::class, 'gerarTitulo' ]);
+
 });
 
 

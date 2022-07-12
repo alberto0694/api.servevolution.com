@@ -1,20 +1,19 @@
 <?php
 
-namespace App\Models\Financeiro;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Titulo extends Model
+class OrdemServicoStatus extends Model
 {
     use HasFactory;
 
-    protected $table = 'titulo';
+    protected $table = 'ordem_servico_status';
 
     protected $fillable = [
-        'id',
-        'parcela_id',
-        'valor_baixado',
+        'ordem_servico_id',
+        'descricao',
         'ativo'
     ];
 

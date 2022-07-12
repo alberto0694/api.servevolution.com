@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTabelaPrecoCliente extends Migration
+class CreateOrdemServicoStatus extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,15 @@ class CreateTabelaPrecoCliente extends Migration
      */
     public function up()
     {
-        Schema::create('tabela_preco_cliente', function (Blueprint $table) {
+        Schema::create('ordem_servico_status', function (Blueprint $table) {
             $table->id();
-            $table->integer('tabela_preco_id');
-            $table->integer('cliente_id');
+            $table->integer('ordem_servico_id')->nullable();
+            $table->string('descricao');
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
 
-            $table->foreign('tabela_preco_id')->references('id')->on('tabela_preco');
-            $table->foreign('cliente_id')->references('id')->on('cliente');
+            $table->foreign('ordem_servico_id')->references('id')->on('ordem_servico');
+
         });
     }
 
@@ -31,6 +32,6 @@ class CreateTabelaPrecoCliente extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tabela_preco_cliente');
+        Schema::dropIfExists('ordem_servico_status');
     }
 }

@@ -6,6 +6,7 @@ use App\Models\TipoCusto;
 use App\Models\UnidadeMedida;
 use App\Models\TipoServico;
 use App\Models\OrdemServicoCusto;
+use App\Models\OrdemServicoStatus;
 use Illuminate\Database\Seeder;
 use App\Models\Usuario;
 use App\Models\Funcionario;
@@ -95,6 +96,12 @@ class DatabaseSeeder extends Seeder
                     ->count(60)
                     ->create()
                     ->each(function($ordem) use ($funcionarios){
+
+                        OrdemServicoStatus::create([
+                            'ordem_servico_id' => $ordem->id,
+                            'descricao' => 'agendado'
+                        ]);
+
                         $keys = array_rand($funcionarios->toArray(), random_int(2, 5));
                         collect(Funcionario::whereIn('id', $keys)->get())
                             ->each(fn($f) => $ordem->funcionarios()->save($f));
@@ -142,15 +149,15 @@ class DatabaseSeeder extends Seeder
             ['titulo' => "Tipos de Custos", 'nivel' => 2, 'papel_id' => 2, 'menu_pai_id' => 1, 'rota' => "/app/tipo-custos", 'icone' => "pessoa-white28x28", 'icone_aux' => "pessoa28x28" ],
             ['titulo' => "Clientes", 'nivel' => 2, 'papel_id' => 2, 'menu_pai_id' => 1, 'rota' => "/app/clientes", 'icone' => "pessoa-white28x28", 'icone_aux' => "pessoa28x28" ],
             ['titulo' => "Unidades de Medida", 'nivel' => 2, 'papel_id' => 2, 'menu_pai_id' => 1, 'rota' => "/app/unidade-medida", 'icone' => "pessoa-white28x28", 'icone_aux' => "pessoa28x28" ],
-            ['titulo' => "Tabelas de Preço", 'nivel' => 2, 'papel_id' => 2, 'menu_pai_id' => 1, 'rota' => "/app/tabelas-preco", 'icone' => "pessoa-white28x28", 'icone_aux' => "pessoa28x28" ],
 
             ['titulo' => "Ordem de Serviço", 'nivel' => 1, 'papel_id' => 7, 'menu_pai_id' => null, 'rota' => null, 'icone' => "endereco-white28x28", 'icone_aux' => "endereco28x28" ],
-            ['titulo' => "Agendamentos", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 8, 'rota' => "/app/ordem-servicos/agendamentos", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
+            ['titulo' => "Agendamentos", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 7, 'rota' => "/app/ordem-servicos/agendamentos", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
 
             ['titulo' => "Financeiro", 'nivel' => 1, 'papel_id' => 7, 'menu_pai_id' => null, 'rota' => null, 'icone' => "endereco-white28x28", 'icone_aux' => "endereco28x28" ],
-            ['titulo' => "Pagamento Funcionário", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 10, 'rota' => "/app/financeiro/pagamento-funcionario", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
-            ['titulo' => "Conta à Pagar", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 10, 'rota' => "/app/financeiro/contas-pagar", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
-            ['titulo' => "Conta à Receber", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 10, 'rota' => "/app/financeiro/contas-receber", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
+            ['titulo' => "Títulos", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 9, 'rota' => "/app/financeiro/titulos", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
+            ['titulo' => "Pagamento Funcionário", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 9, 'rota' => "/app/financeiro/pagamento-funcionario", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
+            ['titulo' => "Conta à Pagar", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 9, 'rota' => "/app/financeiro/contas-pagar", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
+            ['titulo' => "Conta à Receber", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 9, 'rota' => "/app/financeiro/contas-receber", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
 
             ['titulo' => "Relatórios", 'nivel' => 1, 'papel_id' => 7, 'menu_pai_id' => null, 'rota' => null, 'icone' => "endereco-white28x28", 'icone_aux' => "endereco28x28" ],
             ['titulo' => "Serviços Prestados", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 14, 'rota' => "/app/relatorios/servicos-prestados", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],

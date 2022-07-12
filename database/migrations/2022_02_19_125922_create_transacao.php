@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTabelaPreco extends Migration
+class CreateTransacao extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,15 @@ class CreateTabelaPreco extends Migration
      * @return void
      */
     public function up()
-    {
-        Schema::create('tabela_preco', function (Blueprint $table) {
+    {    
+        Schema::create('transacao', function (Blueprint $table) {
             $table->id();
-            $table->string('descricao');
-            $table->boolean('ativo')->default(true);
+            $table->integer('parcela_id');
+            $table->float('valor_baixado');
+            $table->boolean('ativo');
             $table->timestamps();
+
+            $table->foreign('parcela_id')->references('id')->on('parcela');
         });
     }
 
@@ -28,6 +31,6 @@ class CreateTabelaPreco extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tabela_preco');
+        Schema::dropIfExists('transacao');
     }
 }
