@@ -32,12 +32,8 @@ class TituloController extends Controller
     {
         try{
 
-            $ordem_servicos = OrdemServico::where('ativo', true)->get();
-            $ordem_servicos = collect($ordem_servicos)
-                                 ->filter(fn($o) => $o->active_status?->descricao === 'finalizado')
-                                 ->values();
-
-            return response()->json($ordem_servicos);
+            $titulos = Titulo::with('ordemServicos')->where('ativo', true)->get();
+            return response()->json($titulos);
 
         }
         catch (\Throwable $th)
@@ -49,28 +45,40 @@ class TituloController extends Controller
     public function gerarTitulo(Request $request)
     {
         try{
-            $body = $request->all();
 
-           
-            $ordem_servicos = collect($body)->map(function ($ordem) {
+            $body = collect($request->all());
 
-                Titulo::create([
-                    'valor_nominal' => $ordem['valor'] ?? 0,
+            if($body->count() > 0){
+                $valor_nominal = 4;
+                $titulo = Titulo::create([
+                    'valor_nominal' => 0,
                     'valor_atualizado' => 0,
                     'valor_baixado' => 0,
                     'saldo' => 0
                 ]);
+    
+                $ordem_servicos = $body->map(function ($ordem) use (&$valor_nominal, $titulo) {
+                    
+                    $ordem_servico = OrdemServico::find($ordem['id']);
+                    $ordem_servico->update(['titulo_id' => $titulo->id]);
+    
+                    OrdemServicoStatus::create([
+                        'ordem_servico_id' => $ordem['id'],
+                        'descricao' => 'faturado'
+                    ]);
+    
+                    $valor_nominal += $valor_nominal + ((float)$ordem_servico->valor ?? 0);
+                    return $ordem;
+                });
+                
+                $titulo->update(['valor_nominal' => $valor_nominal]);
+                $titulo->save();
+    
+                return response()->json($ordem_servicos);
+            }
 
-                OrdemServicoStatus::create([
-                    'ordem_servico_id' => $ordem['id'],
-                    'descricao' => 'faturado'
-                ]);
-
-                return $ordem;
-            });
-
-            return response()->json($ordem_servicos);
-
+            return response()->json([]);
+            
         }
         catch (\Throwable $th)
         {

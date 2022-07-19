@@ -103,6 +103,7 @@ Route::group([
 ], function ($router) {
 
     Route::get('/list', [ ClienteController::class, 'list' ]);
+    Route::post('/valor-servico/createOrUpdate', [ ClienteController::class, 'createOrUpdateValorServico' ]);
     Route::post('/createOrUpdate', [ ClienteController::class, 'createOrUpdate' ]);
     Route::get('/delete/{id}', [ ClienteController::class, 'deleteCliente' ]);
     Route::get('/get/{id}', [ ClienteController::class, 'getCliente' ]);
@@ -119,8 +120,9 @@ Route::group([
     Route::post('/list', [ OrdemServicoController::class, 'list' ]);
     Route::post('/createOrUpdate', [ OrdemServicoController::class, 'createOrUpdate' ]);
     Route::get('/delete/{id}', [ OrdemServicoController::class, 'deleteOrdemServico' ]);
-    Route::get('/finalizar/{id}', [ OrdemServicoController::class, 'finalizarOrdemServico' ]);
+    Route::post('/finalizar/{id}', [ OrdemServicoController::class, 'finalizarOrdemServico' ]);
     Route::get('/get/{id}', [ OrdemServicoController::class, 'getOrdemServico' ]);
+    Route::get('/valor-servico-os/{id}', [ OrdemServicoController::class, 'getValorServicoOS' ]);
 
     Route::post('/funcionario/delete/{ordem_servico_id}', [ OrdemServicoController::class, 'deleteFuncionarioOrdemServico' ]);
     Route::post('/list-kanban', [ OrdemServicoController::class, 'listKanban' ]);
@@ -133,8 +135,11 @@ Route::group([
 
 ], function ($router) {
 
+    Route::post('/list', [ TituloController::class, 'tituloList' ]);
     Route::post('/ordem-servicos', [ TituloController::class, 'ordemServicoList' ]);
     Route::post('/ordem-servicos/gerar', [ TituloController::class, 'gerarTitulo' ]);
+    
+    
 
 });
 

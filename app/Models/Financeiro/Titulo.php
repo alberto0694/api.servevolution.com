@@ -4,6 +4,7 @@ namespace App\Models\Financeiro;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\OrdemServico;
 
 class Titulo extends Model
 {
@@ -19,5 +20,10 @@ class Titulo extends Model
         'saldo',
         'ativo'
     ];
+
+    public function ordemServicos()
+    {
+        return $this->hasMany(OrdemServico::class);
+    }
 
 }

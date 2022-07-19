@@ -22,6 +22,16 @@ class Cliente extends Model
         return $this->hasMany(OrdemServico::class);
     }
 
+    public function valoresServicos()
+    {
+        return $this->hasMany(ValoresServicos::class);
+    }
+
+    public function valoresFuncionarios()
+    {
+        return $this->hasMany(ValoresFuncionarios::class);
+    }    
+
     public function pessoa()
     {
         return $this->belongsTo(Pessoa::class);

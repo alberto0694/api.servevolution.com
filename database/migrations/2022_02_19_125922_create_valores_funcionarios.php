@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrdemServico extends Migration
+class CreateValoresFuncionarios extends Migration
 {
     /**
      * Run the migrations.
@@ -12,23 +12,21 @@ class CreateOrdemServico extends Migration
      * @return void
      */
     public function up()
-    {
-        Schema::create('ordem_servico', function (Blueprint $table) {
+    {    
+        Schema::create('valores_funcionarios', function (Blueprint $table) {
             $table->id();
-            $table->longText('descricao')->nullable();
-            $table->date('data')->nullable();
-            $table->time('hora')->nullable();
             $table->integer('tipo_servico_id');
             $table->integer('cliente_id');
-            $table->integer('titulo_id')->nullable();
-            $table->float('valor')->nullable();
-            $table->boolean('ativo')->default(true);
+            $table->integer('unidade_medida_id');
+            $table->integer('funcionario_id');
+            $table->float('valor');
+            $table->boolean('ativo');
             $table->timestamps();
 
-            $table->foreign('titulo_id')->references('id')->on('titulo');
             $table->foreign('tipo_servico_id')->references('id')->on('tipo_servico');
             $table->foreign('cliente_id')->references('id')->on('cliente');
-
+            $table->foreign('unidade_medida_id')->references('id')->on('unidade_medida');
+            $table->foreign('funcionario_id')->references('id')->on('funcionario');
         });
     }
 
@@ -39,6 +37,6 @@ class CreateOrdemServico extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ordem_servico');
+        Schema::dropIfExists('valores_funcionarios');
     }
 }

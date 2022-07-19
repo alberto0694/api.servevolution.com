@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\OrdemServico;
+use App\Models\ValoresServicos;
 use App\Models\OrdemServicoStatus;
 use App\Models\OrdemServicoCusto;
 use App\Models\OrdemServicoFuncionario;
@@ -96,15 +97,26 @@ class OrdemServicoController extends Controller
         }
     }
 
-    public function finalizarOrdemServico($id)
+    public function finalizarOrdemServico(Request $request, $id)
     {
         try {
+
+            $body = $request->all();
+            $ordem_servico = OrdemServico::find($id);
+            $valor_servico = ValoresServicos::where('cliente_id', $ordem_servico->cliente_id)
+                                        ->where('tipo_servico_id', $ordem_servico->tipo_servico_id)
+                                        ->first();
+            
+            $ordem_servico->valor = ($valor_servico->valor ?? 1) * (float)$body['quantidade_trabalho'];
+            $ordem_servico->save();
+
             $ordem_servico_status = OrdemServicoStatus::create([
                 'ordem_servico_id' => $id,
                 'descricao' => 'finalizado'
             ]);
 
-            return response()->json($ordem_servico_status);
+            return response()->json($valor_servico);
+
         } catch (\Throwable $e) {
             return response()->json(new ErrorResponse($e->getMessage()));
         }
@@ -125,6 +137,23 @@ class OrdemServicoController extends Controller
                 ->find($ordem_servico_id);
 
             return response()->json($ordem_servico->funcionarios);
+        } catch (\Throwable $e) {
+            return response()->json(new ErrorResponse($e->getMessage()));
+        }
+    }
+
+    public function getValorServicoOS($id)
+    {
+        try {
+
+            $ordem_servico = OrdemServico::find($id);
+            $valor_servico = ValoresServicos::with('unidadeMedida')
+                                        ->where('cliente_id', $ordem_servico->cliente_id)
+                                        ->where('tipo_servico_id', $ordem_servico->tipo_servico_id)
+                                        ->first();
+            
+            return response()->json($valor_servico);
+
         } catch (\Throwable $e) {
             return response()->json(new ErrorResponse($e->getMessage()));
         }

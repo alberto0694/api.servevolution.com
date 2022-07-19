@@ -24,6 +24,8 @@ class CreateMenu extends Migration
             $table->string('menu_pai_id')->nullable();
             $table->boolean('ativo')->default(true);
             $table->timestamps();
+
+            $table->foreign('papel_id')->references('id')->on('papel');
         });
     }
 

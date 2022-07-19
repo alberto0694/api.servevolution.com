@@ -24,6 +24,7 @@ class OrdemServico extends Model
         'descricao',
         'tipo_servico_id',
         'cliente_id',
+        'titulo_id',
         'valor',
         'ativo'
     ];
@@ -44,7 +45,7 @@ class OrdemServico extends Model
             return $this->status()->orderBy('created_at', 'desc')->first();
         }
         return null;
-    }    
+    }
 
     public function funcionarios()
     {

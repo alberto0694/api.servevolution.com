@@ -7,6 +7,7 @@ use App\Models\Cliente;
 use App\Models\Pessoa;
 use App\Models\Usuario;
 use App\Helpers\ErrorResponse;
+use App\Models\ValoresServicos;
 
 class ClienteController extends Controller
 {
@@ -75,10 +76,39 @@ class ClienteController extends Controller
         }
     }
 
+    public function createOrUpdateValorServico(Request $request)
+    {
+        try {
+
+            $data = $request->all();
+            
+            if (!isset($data['id'])) {
+
+                $valorServico = ValoresServicos::create($data);
+                
+            } else {
+
+                $valorServico = ValoresServicos::find($data['id']);
+                $valorServico->update($data);
+            }
+
+            $valoresServicos = ValoresServicos::with(['unidadeMedida', 'tipoServico'])
+                                                ->where('ativo', true)
+                                                ->where('cliente_id', $data['cliente_id'])
+                                                ->get();
+
+            return response()->json($valoresServicos);
+
+        } catch (\Throwable $th) {
+
+            return response()->json(new ErrorResponse($th->getMessage()));
+        }
+    }
+
     public function getCliente(Request $request, $id)
     {
         try {
-            $cliente = Cliente::with(['pessoa'])->find($id);
+            $cliente = Cliente::with(['pessoa', 'valoresServicos.unidadeMedida', 'valoresServicos.tipoServico'])->find($id);
             return response()->json($cliente);
         } catch (\Throwable $e) {
             return response()->json($e->getMessage());
