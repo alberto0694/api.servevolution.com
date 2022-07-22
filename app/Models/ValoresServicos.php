@@ -20,6 +20,10 @@ class ValoresServicos extends Model
         'ativo'
     ];
 
+    protected $casts = [
+        'valor' => 'float:2',
+    ];    
+
     public function unidadeMedida()
     {
         return $this->belongsTo(UnidadeMedida::class);

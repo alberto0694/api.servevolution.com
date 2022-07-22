@@ -97,7 +97,8 @@ class ClienteController extends Controller
                                                 ->where('cliente_id', $data['cliente_id'])
                                                 ->get();
 
-            return response()->json($valoresServicos);
+            //print_r(json_encode($valoresServicos, JSON_NUMERIC_CHECK));
+            return response()->json($valoresServicos, 200);
 
         } catch (\Throwable $th) {
 
