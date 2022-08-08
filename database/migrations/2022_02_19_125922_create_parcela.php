@@ -21,7 +21,7 @@ class CreateParcela extends Migration
             $table->float('valor_baixado');
             $table->float('saldo');
             $table->timestamp('vencimento');
-            $table->boolean('ativo');
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
 
             $table->foreign('titulo_id')->references('id')->on('titulo');

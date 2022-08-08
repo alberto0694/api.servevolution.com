@@ -16,7 +16,8 @@ class OrdemServicoFactory extends Factory
     {
         return [
             'data' => Carbon::now()->subDays(rand(1, 40)),
-            'hora' => Carbon::now()->subDays(rand(1, 40)),
+            'hora_inicial' => Carbon::now()->subDays(rand(1, 40)),
+            'hora_final' => Carbon::now()->subDays(rand(4, 40)),
             'descricao' => $this->faker->text(),
             'tipo_servico_id' => $this->getId(5),
             'cliente_id' => $this->getId(30),

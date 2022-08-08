@@ -20,7 +20,8 @@ class OrdemServico extends Model
     protected $fillable = [
         'id',
         'data',
-        'hora',
+        'hora_inicial',
+        'hora_final',
         'descricao',
         'tipo_servico_id',
         'cliente_id',

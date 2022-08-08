@@ -19,7 +19,7 @@ class CreateValoresServicos extends Migration
             $table->integer('cliente_id');
             $table->integer('unidade_medida_id');
             $table->float('valor');
-            $table->boolean('ativo');
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
 
             $table->foreign('tipo_servico_id')->references('id')->on('tipo_servico');

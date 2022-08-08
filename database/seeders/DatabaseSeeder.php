@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\TipoCusto;
 use App\Models\UnidadeMedida;
 use App\Models\TipoServico;
+use App\Models\ValoresServicos;
 use App\Models\OrdemServicoCusto;
 use App\Models\OrdemServicoStatus;
 use Illuminate\Database\Seeder;
@@ -20,6 +21,7 @@ use App\Models\Permissao\PapelUsuario;
 use App\Models\OrdemServico;
 use App\Models\OrdemServicoFuncionario;
 use Faker;
+use Illuminate\Support\Arr;
 
 class DatabaseSeeder extends Seeder
 {
@@ -30,47 +32,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-
+        $this->preDataseed();
         $this->fakeDataSeed();
         $this->permissaoSeed();
-
     }
 
-    public function fakeDataSeed(){
-
-        $faker = \Faker\Factory::create();
-
-        $colaboradores = Pessoa::factory()
-                        ->count(30)
-                        ->create()
-                        ->each(function($pessoa) use($faker) {
-                            $pessoa->colaboradores()->save(new Colaborador());
-                            $pessoa->usuarios()->save(new Usuario([
-                                'name' => $pessoa->razao ?? $pessoa->apelido,
-                                'email' => $faker->email(),
-                                'password' => bcrypt('123456')
-                            ]));
-                        });
-
-        $clientes = Pessoa::factory()
-                        ->count(30)
-                        ->create()
-                        ->each(function($pessoa) use($faker) {
-                            $pessoa->clientes()->save(new Cliente());
-                            $pessoa->usuarios()->save(new Usuario([
-                                'name' => $pessoa->razao ?? $pessoa->apelido,
-                                'email' => $faker->email(),
-                                'password' => bcrypt('123456')
-                            ]));
-                        });
-
-        $funcionarios = Pessoa::factory()
-                        ->count(30)
-                        ->create()
-                        ->each(function($pessoa){
-                            $pessoa->funcionarios()->save(new Funcionario());
-                        });
-
+    private function preDataseed(){
 
         TipoServico::insert([
             [ 'descricao' => 'Limpeza'],
@@ -91,6 +58,58 @@ class DatabaseSeeder extends Seeder
             [ 'descricao' => 'Diária' ],
             [ 'descricao' => 'Noturno' ]
         ]);
+
+    }
+
+    private function fakeDataSeed(){
+    
+        $faker = \Faker\Factory::create();
+        $tp_servicos = collect(TipoServico::all())->toArray();
+        $un_medidas = collect(UnidadeMedida::all())->toArray();
+
+        $colaboradores = Pessoa::factory()
+                        ->count(30)
+                        ->create()
+                        ->each(function($pessoa) use($faker) {
+                            $pessoa->colaboradores()->save(new Colaborador());
+                            $pessoa->usuarios()->save(new Usuario([
+                                'name' => $pessoa->razao ?? $pessoa->apelido,
+                                'email' => $faker->email(),
+                                'password' => bcrypt('123456')
+                            ]));
+                        });
+        
+        $clientes = Pessoa::factory()
+                        ->count(30)
+                        ->create()
+                        ->each(function($pessoa) use($faker, $tp_servicos, $un_medidas) {
+                            
+                            $pessoa->clientes()->save(new Cliente());
+                            $pessoa->usuarios()->save(new Usuario([
+                                'name' => $pessoa->razao ?? $pessoa->apelido,
+                                'email' => $faker->email(),
+                                'password' => bcrypt('123456')
+                            ]));
+
+                            for ($i=0; $i < 5; $i++) { 
+                                                                
+                                $servico = ValoresServicos::create([
+                                    'tipo_servico_id' => Arr::random($tp_servicos, 1)[0]['id'],
+                                    'cliente_id' => $pessoa->clientes[0]->id,
+                                    'unidade_medida_id' => Arr::random($un_medidas, 1)[0]['id'],
+                                    'valor' => 100
+                                ]);
+
+                            }
+                        });
+
+        $funcionarios = Pessoa::factory()
+                        ->count(30)
+                        ->create()
+                        ->each(function($pessoa){
+                            $pessoa->funcionarios()->save(new Funcionario());
+                        });
+
 
         $ordens = OrdemServico::factory()
                     ->count(60)
@@ -115,7 +134,7 @@ class DatabaseSeeder extends Seeder
         });
     }
 
-    public function permissaoSeed(){
+    private function permissaoSeed(){
 
         Permissao::insert([
             [ 'programa' => "PROG_CADASTRO", 'titulo' => "Programa de Cadastros", 'descricao' => "Cadastros" ],
@@ -156,8 +175,8 @@ class DatabaseSeeder extends Seeder
             ['titulo' => "Financeiro", 'nivel' => 1, 'papel_id' => 7, 'menu_pai_id' => null, 'rota' => null, 'icone' => "endereco-white28x28", 'icone_aux' => "endereco28x28" ],
             ['titulo' => "Títulos", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 9, 'rota' => "/app/financeiro/titulos", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
             ['titulo' => "Pagamento Funcionário", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 9, 'rota' => "/app/financeiro/pagamento-funcionario", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
-            ['titulo' => "Conta à Pagar", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 9, 'rota' => "/app/financeiro/contas-pagar", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
-            ['titulo' => "Conta à Receber", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 9, 'rota' => "/app/financeiro/contas-receber", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
+            ['titulo' => "Contas à Pagar", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 9, 'rota' => "/app/financeiro/contas-pagar", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
+            ['titulo' => "Contas à Receber", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 9, 'rota' => "/app/financeiro/contas-receber", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],
 
             ['titulo' => "Relatórios", 'nivel' => 1, 'papel_id' => 7, 'menu_pai_id' => null, 'rota' => null, 'icone' => "endereco-white28x28", 'icone_aux' => "endereco28x28" ],
             ['titulo' => "Serviços Prestados", 'nivel' => 2, 'papel_id' => 7, 'menu_pai_id' => 14, 'rota' => "/app/relatorios/servicos-prestados", 'icone' => "regime-empresa-white28x28", 'icone_aux' => "regime-empresa28x28" ],

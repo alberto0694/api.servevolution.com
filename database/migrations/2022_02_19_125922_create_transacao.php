@@ -17,7 +17,7 @@ class CreateTransacao extends Migration
             $table->id();
             $table->integer('parcela_id');
             $table->float('valor_baixado');
-            $table->boolean('ativo');
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
 
             $table->foreign('parcela_id')->references('id')->on('parcela');

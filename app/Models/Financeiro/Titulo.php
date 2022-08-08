@@ -26,4 +26,9 @@ class Titulo extends Model
         return $this->hasMany(OrdemServico::class);
     }
 
+    public function parcelas()
+    {
+        return $this->hasMany(Parcela::class);
+    }
+
 }

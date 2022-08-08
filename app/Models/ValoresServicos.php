@@ -21,7 +21,7 @@ class ValoresServicos extends Model
     ];
 
     protected $casts = [
-        'valor' => 'float:2',
+        'valor' => 'float',
     ];    
 
     public function unidadeMedida()

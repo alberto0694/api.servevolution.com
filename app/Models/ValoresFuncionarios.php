@@ -21,4 +21,8 @@ class ValoresFuncionarios extends Model
         'ativo'
     ];
 
+    protected $casts = [
+        'valor' => 'float',
+    ];    
+
 }

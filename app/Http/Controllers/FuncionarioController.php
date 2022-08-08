@@ -15,11 +15,17 @@ class FuncionarioController extends Controller
     {
         try {
 
-            $funcionarios = Funcionario::with(['pessoa'])
-                                    ->where('ativo', true)
-                                    ->get();
+            $params = $request->query();
 
-            return response()->json($funcionarios);
+            $funcionarios = Funcionario::with(['pessoa']);
+
+            if(!empty($params['tipo_servico_id'])){
+                $funcionarios->with('tipoServicos', function($query) use ($params) {
+                    $query->where('tipo_servico_id', $params['tipo_servico_id']);
+                });
+            }
+
+            return response()->json($funcionarios->where('ativo', true)->get());
 
         } catch (\Throwable $th) {
             return response()->json(new ErrorResponse($th->getMessage()));

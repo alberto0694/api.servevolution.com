@@ -104,7 +104,10 @@ Route::group([
 
     Route::get('/list', [ ClienteController::class, 'list' ]);
     Route::post('/valor-servico/createOrUpdate', [ ClienteController::class, 'createOrUpdateValorServico' ]);
+    Route::post('/valor-funcionario/createOrUpdate', [ ClienteController::class, 'createOrUpdateValorFuncionario' ]);
     Route::post('/createOrUpdate', [ ClienteController::class, 'createOrUpdate' ]);
+    Route::get('/valor-servico/delete/{id}', [ ClienteController::class, 'deleteValorServico' ]);
+    Route::get('/valor-funcionario/delete/{id}', [ ClienteController::class, 'deleteValorFuncionario' ]);
     Route::get('/delete/{id}', [ ClienteController::class, 'deleteCliente' ]);
     Route::get('/get/{id}', [ ClienteController::class, 'getCliente' ]);
 
@@ -138,6 +141,7 @@ Route::group([
     Route::post('/list', [ TituloController::class, 'tituloList' ]);
     Route::post('/ordem-servicos', [ TituloController::class, 'ordemServicoList' ]);
     Route::post('/ordem-servicos/gerar', [ TituloController::class, 'gerarTitulo' ]);
+    Route::get('/delete/{id}', [ TituloController::class, 'deleteTitulo' ]);
     
     
 

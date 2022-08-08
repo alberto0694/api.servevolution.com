@@ -17,7 +17,8 @@ class CreateOrdemServico extends Migration
             $table->id();
             $table->longText('descricao')->nullable();
             $table->date('data')->nullable();
-            $table->time('hora')->nullable();
+            $table->time('hora_inicial')->nullable();
+            $table->time('hora_final')->nullable();
             $table->integer('tipo_servico_id');
             $table->integer('cliente_id');
             $table->integer('titulo_id')->nullable();

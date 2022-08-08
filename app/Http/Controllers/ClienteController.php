@@ -106,10 +106,47 @@ class ClienteController extends Controller
         }
     }
 
+    public function createOrUpdateValorFuncionario(Request $request)
+    {
+        try {
+
+            // $data = $request->all();
+            
+            // if (!isset($data['id'])) {
+
+            //     $valorServico = ValoresServicos::create($data);
+                
+            // } else {
+
+            //     $valorServico = ValoresServicos::find($data['id']);
+            //     $valorServico->update($data);
+            // }
+
+            // $valoresServicos = ValoresServicos::with(['unidadeMedida', 'tipoServico'])
+            //                                     ->where('ativo', true)
+            //                                     ->where('cliente_id', $data['cliente_id'])
+            //                                     ->get();
+
+            //print_r(json_encode($valoresServicos, JSON_NUMERIC_CHECK));
+            return response()->json([], 200);
+
+        } catch (\Throwable $th) {
+
+            return response()->json(new ErrorResponse($th->getMessage()));
+        }
+    }
+
     public function getCliente(Request $request, $id)
     {
         try {
-            $cliente = Cliente::with(['pessoa', 'valoresServicos.unidadeMedida', 'valoresServicos.tipoServico'])->find($id);
+            $cliente = Cliente::with([
+                                    'pessoa', 
+                                    'valoresServicos.unidadeMedida', 
+                                    'valoresServicos.tipoServico',
+                                    'valoresFuncionarios.tipoServico',
+                                    'valoresFuncionarios.unidadeMedida'
+                                ])->find($id);
+
             return response()->json($cliente);
         } catch (\Throwable $e) {
             return response()->json($e->getMessage());
@@ -131,4 +168,41 @@ class ClienteController extends Controller
         }
     }
 
+    public function deleteValorServico($id)
+    {
+        try {
+
+            $valor_servico = ValoresServicos::find($id);
+            $valor_servico->update(['ativo' => false]);
+
+            $valores_servico = ValoresServicos::with(['unidadeMedida', 'tipoServico'])
+                                                ->where('ativo', true)
+                                                ->where('cliente_id', $valor_servico->cliente_id)
+                                                ->get();
+
+            return response()->json($valores_servico);
+
+        } catch (\Throwable $e) {
+            return response()->json($e->getMessage());
+        }
+    }
+
+    public function deleteValorFuncionario($id)
+    {
+        try {
+
+            // $valor_servico = ValoresServicos::find($id);
+            // $valor_servico->update(['ativo' => false]);
+
+            // $valores_servico = ValoresServicos::with(['unidadeMedida', 'tipoServico'])
+            //                                     ->where('ativo', true)
+            //                                     ->where('cliente_id', $valor_servico->cliente_id)
+            //                                     ->get();
+
+            return response()->json([]);
+
+        } catch (\Throwable $e) {
+            return response()->json($e->getMessage());
+        }
+    }
 }

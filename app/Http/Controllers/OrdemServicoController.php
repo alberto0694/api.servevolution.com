@@ -47,7 +47,7 @@ class OrdemServicoController extends Controller
                 });
             }
 
-            $ordem_servicos->orderBy('data', 'asc')->orderBy('hora', 'asc');
+            $ordem_servicos->orderBy('data', 'asc')->orderBy('hora_inicial', 'asc');
             $kanbanList = $this->getKanbanList($ordem_servicos);
 
             return response()->json([
