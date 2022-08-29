@@ -14,13 +14,16 @@ class Colaborador extends Model
     protected $fillable = [
         'id',
         'pessoa_id',
+        'cpf',
+        'rg',
+        'orgao_emissor',
+        'uf_emissor',
+        'sexo',
+        'data_admissao',
+        'data_demissao',
+        'referencia_id',
         'ativo'
     ];
-
-    public function ordemServicos()
-    {
-        return $this->hasManyThrough(OrdemServico::class, OrdemServicoCliente::class);
-    }
 
     public function pessoa()
     {

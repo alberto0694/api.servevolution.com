@@ -8,6 +8,7 @@ use App\Models\Pessoa;
 use App\Models\Usuario;
 use App\Helpers\ErrorResponse;
 use App\Models\ValoresServicos;
+use App\Models\ValoresFuncionarios;
 
 class ClienteController extends Controller
 {
@@ -110,25 +111,28 @@ class ClienteController extends Controller
     {
         try {
 
-            // $data = $request->all();
-            
-            // if (!isset($data['id'])) {
+            $data = $request->except('cliente_id');
+            $cliente_id = $request->query('cliente_id');
+        
+            collect($data)->each(function($valorFuncionarioItem) {
+                if (!isset($valorFuncionarioItem['id'])) {
 
-            //     $valorServico = ValoresServicos::create($data);
-                
-            // } else {
+                    ValoresFuncionarios::create($valorFuncionarioItem);
+                    
+                } else {
+    
+                    $valorFuncionario = ValoresFuncionarios::find($valorFuncionarioItem['id']);
+                    $valorFuncionario->update($valorFuncionarioItem);
+                }
 
-            //     $valorServico = ValoresServicos::find($data['id']);
-            //     $valorServico->update($data);
-            // }
+            });
 
-            // $valoresServicos = ValoresServicos::with(['unidadeMedida', 'tipoServico'])
-            //                                     ->where('ativo', true)
-            //                                     ->where('cliente_id', $data['cliente_id'])
-            //                                     ->get();
+            $valores = ValoresFuncionarios::with(['unidadeMedida', 'tipoServico', 'funcionario.pessoa'])
+                    ->where('ativo', true)
+                    ->where('cliente_id', $cliente_id)
+                    ->get();
 
-            //print_r(json_encode($valoresServicos, JSON_NUMERIC_CHECK));
-            return response()->json([], 200);
+            return response()->json($valores, 200);
 
         } catch (\Throwable $th) {
 
@@ -144,7 +148,8 @@ class ClienteController extends Controller
                                     'valoresServicos.unidadeMedida', 
                                     'valoresServicos.tipoServico',
                                     'valoresFuncionarios.tipoServico',
-                                    'valoresFuncionarios.unidadeMedida'
+                                    'valoresFuncionarios.unidadeMedida',
+                                    'valoresFuncionarios.funcionario.pessoa'
                                 ])->find($id);
 
             return response()->json($cliente);
@@ -187,19 +192,24 @@ class ClienteController extends Controller
         }
     }
 
-    public function deleteValorFuncionario($id)
+    public function deleteValorFuncionario(Request $request)
     {
         try {
 
-            // $valor_servico = ValoresServicos::find($id);
-            // $valor_servico->update(['ativo' => false]);
+            $ids = $request->except('cliente_id');
+            $cliente_id = $request->query('cliente_id');
 
-            // $valores_servico = ValoresServicos::with(['unidadeMedida', 'tipoServico'])
-            //                                     ->where('ativo', true)
-            //                                     ->where('cliente_id', $valor_servico->cliente_id)
-            //                                     ->get();
+            collect($ids)->each(function($id){
+                $valor_func = ValoresFuncionarios::find($id);
+                $valor_func->update(['ativo' => false]);
+            });
 
-            return response()->json([]);
+            $valores = ValoresFuncionarios::with(['unidadeMedida', 'tipoServico', 'funcionario.pessoa'])
+                    ->where('ativo', true)
+                    ->where('cliente_id', $cliente_id)
+                    ->get();
+
+            return response()->json($valores, 200);
 
         } catch (\Throwable $e) {
             return response()->json($e->getMessage());

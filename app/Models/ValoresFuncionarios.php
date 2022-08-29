@@ -23,6 +23,26 @@ class ValoresFuncionarios extends Model
 
     protected $casts = [
         'valor' => 'float',
-    ];    
+    ];
+
+    public function funcionario()
+    {
+        return $this->belongsTo(Funcionario::class);
+    }
+
+    public function unidadeMedida()
+    {
+        return $this->belongsTo(UnidadeMedida::class);
+    }
+
+    public function cliente()
+    {
+        return $this->belongsTo(Cliente::class);
+    }
+
+    public function tipoServico()
+    {
+        return $this->belongsTo(TipoServico::class);
+    }
 
 }

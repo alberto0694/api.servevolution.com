@@ -27,6 +27,11 @@ class Pessoa extends Model
         'normalized_name',
     ];
 
+    public function enderecos()
+    {
+        return $this->belongsToMany(Endereco::class, PessoaEndereco::class);
+    }
+
     public function getNormalizedNameAttribute()
     {
         return !empty($this->razao) ? $this->razao : $this->apelido;

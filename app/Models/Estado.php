@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Models\Financeiro;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class transacao extends Model
+class Estado extends Model
 {
     use HasFactory;
 
-    protected $table = 'transacao';
+    protected $table = 'estado';
 
     protected $fillable = [
         'id',
-        'parcela_id',
-        'valor_baixado',
-        'ativo'
+        'nome',
+        'codigo_ibge',
+        'ativo',
     ];
 
 }

@@ -14,6 +14,14 @@ class Funcionario extends Model
     protected $fillable = [
         'id',
         'pessoa_id',
+        'cpf',
+        'rg',
+        'orgao_emissor',
+        'uf_emissor',
+        'sexo',
+        'data_admissao',
+        'data_demissao',
+        'referencia_id',
         'ativo'
     ];
 
@@ -26,5 +34,4 @@ class Funcionario extends Model
     {
         return $this->belongsTo(Pessoa::class, 'pessoa_id');
     }
-
 }

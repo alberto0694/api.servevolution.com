@@ -73,8 +73,13 @@ class TituloController extends Controller
                     $valor_nominal += ((float)$ordem_servico->valor ?? 0);
                     return $ordem;
                 });
-                
-                $titulo->update(['valor_nominal' => $valor_nominal]);
+
+                $titulo->update([
+                    'valor_nominal' => $valor_nominal,
+                    'saldo' => $valor_nominal,
+                    'valor_atualizado' => $valor_nominal
+                ]);
+
                 $titulo->save();
 
                 $valor_parcela = $valor_nominal / $quantidade_parcelas;
@@ -84,9 +89,9 @@ class TituloController extends Controller
                     $data_atual = $data_atual->addMonth();
                     Parcela::create([
                         'valor_nominal'=> $valor_parcela,
-                        'valor_atualizado'=> 0,
+                        'valor_atualizado'=> $valor_parcela,
                         'valor_baixado'=> 0,
-                        'saldo'=> 0,
+                        'saldo'=> $valor_parcela,
                         'titulo_id'=> $titulo->id,        
                         'vencimento'=> $data_atual
                     ]);

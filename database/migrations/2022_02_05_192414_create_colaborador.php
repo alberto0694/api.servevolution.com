@@ -16,6 +16,7 @@ class CreateColaborador extends Migration
         Schema::create('colaborador', function (Blueprint $table) {
             $table->id();
             $table->integer('pessoa_id');
+            $table->string('sexo');
             $table->boolean('ativo')->default(true);
             $table->timestamps();
 

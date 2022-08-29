@@ -16,6 +16,7 @@ class CreateCliente extends Migration
         Schema::create('cliente', function (Blueprint $table) {
             $table->id();
             $table->integer('pessoa_id');
+            $table->string('cpf_cnpj');
             $table->boolean('ativo')->default(true);
             $table->timestamps();
 

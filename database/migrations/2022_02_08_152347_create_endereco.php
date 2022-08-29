@@ -15,12 +15,12 @@ class CreateEndereco extends Migration
     {
         Schema::create('endereco', function (Blueprint $table) {
             $table->id();
-            $table->string('cep');
-            $table->string('logradouro');
-            $table->string('complemento');
-            $table->string('pais');
-            $table->string('bairro');
-            $table->string('numero');
+            $table->string('cep')->nullable();
+            $table->string('logradouro')->nullable();
+            $table->string('complemento')->nullable();
+            $table->string('pais')->nullable();
+            $table->string('bairro')->nullable();
+            $table->string('numero')->nullable();
             $table->integer('estado_id');
             $table->integer('municipio_id');
             $table->boolean('ativo')->default(true);

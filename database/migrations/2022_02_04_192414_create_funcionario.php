@@ -16,6 +16,14 @@ class CreateFuncionario extends Migration
         Schema::create('funcionario', function (Blueprint $table) {
             $table->id();
             $table->integer('pessoa_id');
+            $table->string('cpf')->nullable();
+            $table->string('rg')->nullable();
+            $table->string('orgao_emissor')->nullable();
+            $table->string('uf_emissor')->nullable();
+            $table->string('sexo');
+            $table->timestamp(('data_admissao'))->nullable();
+            $table->timestamp(('data_demissao'))->nullable();
+            $table->string('referencia_id')->nullable();
             $table->boolean('ativo')->default(true);
             $table->timestamps();
 
@@ -34,3 +42,4 @@ class CreateFuncionario extends Migration
         Schema::dropIfExists('funcionario');
     }
 }
+
