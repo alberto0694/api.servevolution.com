@@ -150,7 +150,7 @@ class DatabaseSeeder extends Seeder
                 // ['papel_id' => 8, 'usuario_id' => 31 ], //cliente
             ]);               
 
-            $string = file_get_contents(public_path('data\cidades-estados.json'));
+            $string = file_get_contents(public_path('data/cidades-estados.json'));
             $cidades_estados = json_decode($string);
 
             foreach ($cidades_estados->states as $key => $value) {
@@ -171,7 +171,7 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
 
-            $csvFile = public_path('data\clientes.csv');
+            $csvFile = public_path('data/clientes.csv');
             $csv = $this->csvToArray($csvFile);
 
             foreach ($csv as $item) {
@@ -203,7 +203,7 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
 
-            $csvFile = public_path('data\funcionarios.csv');
+            $csvFile = public_path('data/funcionarios.csv');
             $csv = $this->csvToArray($csvFile);
 
             foreach ($csv as $item) {
