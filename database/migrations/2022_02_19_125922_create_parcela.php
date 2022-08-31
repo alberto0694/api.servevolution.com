@@ -15,7 +15,7 @@ class CreateParcela extends Migration
     {        
         Schema::create('parcela', function (Blueprint $table) {
             $table->id();
-            $table->integer('titulo_id');
+            $table->unsignedBigInteger('titulo_id');
             $table->float('valor_nominal');
             $table->float('valor_atualizado');
             $table->float('valor_baixado');

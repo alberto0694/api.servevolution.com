@@ -15,7 +15,7 @@ class CreateOrdemServicoPagamento extends Migration
     {
         Schema::create('ordem_servico_pagamento', function (Blueprint $table) {
             $table->id();
-            $table->integer('ordem_servico_funcionario_id');
+            $table->unsignedBigInteger('ordem_servico_funcionario_id');
             $table->boolean('ativo')->default(true);
             $table->timestamps();
 

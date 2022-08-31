@@ -15,7 +15,7 @@ class CreateOrdemServicoStatus extends Migration
     {
         Schema::create('ordem_servico_status', function (Blueprint $table) {
             $table->id();
-            $table->integer('ordem_servico_id')->nullable();
+            $table->unsignedBigInteger('ordem_servico_id')->nullable();
             $table->string('descricao');
             $table->boolean('ativo')->default(true);
             $table->timestamps();

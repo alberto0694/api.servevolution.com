@@ -15,7 +15,7 @@ class CreateArquivosCusto extends Migration
     {
         Schema::create('arquivos_custo', function (Blueprint $table) {
             $table->id();
-            $table->integer('ordem_servico_custo_id');
+            $table->unsignedBigInteger('ordem_servico_custo_id');
             $table->string('caminho');
             $table->boolean('ativo')->default(true);
             $table->timestamps();

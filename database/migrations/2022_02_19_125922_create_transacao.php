@@ -15,7 +15,7 @@ class CreateTransacao extends Migration
     {    
         Schema::create('transacao', function (Blueprint $table) {
             $table->id();
-            $table->integer('parcela_id');
+            $table->unsignedBigInteger('parcela_id');
             $table->float('valor_baixado');
             $table->boolean('ativo')->default(true);
             $table->timestamps();

@@ -15,9 +15,9 @@ class CreateFuncionarioTipoServico extends Migration
     {
         Schema::create('funcionario_tipo_servico', function (Blueprint $table) {
             $table->id();
-            $table->integer('tipo_servico_id');
-            $table->integer('funcionario_id');
-            $table->integer('unidade_medida_id');
+            $table->unsignedBigInteger('tipo_servico_id');
+            $table->unsignedBigInteger('funcionario_id');
+            $table->unsignedBigInteger('unidade_medida_id');
             $table->float('valor_cobrado')->default(0);
             $table->timestamps();
 

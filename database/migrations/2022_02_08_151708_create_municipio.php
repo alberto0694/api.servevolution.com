@@ -16,7 +16,7 @@ class CreateMunicipio extends Migration
         Schema::create('municipio', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->integer('estado_id');
+            $table->unsignedBigInteger('estado_id');
             $table->integer('codigo_ibge');
             $table->boolean('ativo')->default(true);
             $table->timestamps();

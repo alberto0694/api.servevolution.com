@@ -15,9 +15,9 @@ class CreateValoresServicos extends Migration
     {    
         Schema::create('valores_servicos', function (Blueprint $table) {
             $table->id();
-            $table->integer('tipo_servico_id');
-            $table->integer('cliente_id');
-            $table->integer('unidade_medida_id');
+            $table->unsignedBigInteger('tipo_servico_id');
+            $table->unsignedBigInteger('cliente_id');
+            $table->unsignedBigInteger('unidade_medida_id');
             $table->float('valor');
             $table->boolean('ativo')->default(true);
             $table->timestamps();

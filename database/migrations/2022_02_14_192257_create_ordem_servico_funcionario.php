@@ -15,8 +15,8 @@ class CreateOrdemServicoFuncionario extends Migration
     {
         Schema::create('ordem_servico_funcionario', function (Blueprint $table) {
             $table->id();
-            $table->integer('funcionario_id');
-            $table->integer('ordem_servico_id');
+            $table->unsignedBigInteger('funcionario_id');
+            $table->unsignedBigInteger('ordem_servico_id');
             $table->float('valor_servico')->default(0);
             $table->timestamps();
 

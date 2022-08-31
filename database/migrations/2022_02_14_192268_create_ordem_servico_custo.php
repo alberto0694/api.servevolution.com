@@ -15,8 +15,8 @@ class CreateOrdemServicoCusto extends Migration
     {
         Schema::create('ordem_servico_custo', function (Blueprint $table) {
             $table->id();
-            $table->integer('ordem_servico_funcionario_id')->nullable();
-            $table->integer('tipo_custo_id');
+            $table->unsignedBigInteger('ordem_servico_funcionario_id')->nullable();
+            $table->unsignedBigInteger('tipo_custo_id');
             $table->float('valor');
             $table->boolean('ativo')->default(true);
             $table->timestamps();

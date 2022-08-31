@@ -15,7 +15,7 @@ class CreateFuncionario extends Migration
     {
         Schema::create('funcionario', function (Blueprint $table) {
             $table->id();
-            $table->integer('pessoa_id');
+            $table->unsignedBigInteger('pessoa_id');
             $table->string('cpf')->nullable();
             $table->string('rg')->nullable();
             $table->string('orgao_emissor')->nullable();

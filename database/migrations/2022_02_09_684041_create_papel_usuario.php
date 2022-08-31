@@ -15,8 +15,8 @@ class CreatePapelUsuario extends Migration
     {
         Schema::create('papel_usuario', function (Blueprint $table) {
             $table->id();
-            $table->integer('papel_id');
-            $table->integer('usuario_id');
+            $table->unsignedBigInteger('papel_id');
+            $table->unsignedBigInteger('usuario_id');
             $table->timestamps();
             $table->boolean('ativo')->default(true);
 

@@ -15,8 +15,8 @@ class CreatePerfilPapel extends Migration
     {
         Schema::create('perfil_papel', function (Blueprint $table) {
             $table->id();
-            $table->integer('perfil_id');
-            $table->integer('papel_id');
+            $table->unsignedBigInteger('perfil_id');
+            $table->unsignedBigInteger('papel_id');
             $table->timestamps();
 
             $table->foreign('perfil_id')->references('id')->on('perfil');

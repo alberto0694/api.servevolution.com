@@ -17,7 +17,7 @@ class CreateUsuario extends Migration
             $table->id();
             $table->string('name');
             $table->string('email');
-            $table->integer('pessoa_id');
+            $table->unsignedBigInteger('pessoa_id');
             $table->string('password');
             $table->string('remember_token')->nullable();
             $table->string('email_verified_at')->nullable();

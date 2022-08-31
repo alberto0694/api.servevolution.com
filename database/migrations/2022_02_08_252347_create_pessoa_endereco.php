@@ -15,8 +15,8 @@ class CreatePessoaEndereco extends Migration
     {
         Schema::create('pessoa_endereco', function (Blueprint $table) {
             $table->id();
-            $table->integer('endereco_id');
-            $table->integer('pessoa_id');
+            $table->unsignedBigInteger('endereco_id');
+            $table->unsignedBigInteger('pessoa_id');
             $table->timestamps();
 
             $table->foreign('endereco_id')->references('id')->on('endereco');

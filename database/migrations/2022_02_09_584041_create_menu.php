@@ -19,7 +19,7 @@ class CreateMenu extends Migration
             $table->integer('nivel');
             $table->string('icone');
             $table->string('icone_aux');
-            $table->integer('papel_id');
+            $table->unsignedBigInteger('papel_id');
             $table->string('rota')->nullable();
             $table->string('menu_pai_id')->nullable();
             $table->boolean('ativo')->default(true);
