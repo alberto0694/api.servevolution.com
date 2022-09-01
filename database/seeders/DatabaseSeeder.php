@@ -183,18 +183,18 @@ class DatabaseSeeder extends Seeder
                 ]);
 
                 $nome = $this->removeAcentos($item[4]);
-                // $municipios = DB::select("select * from municipio where unaccent(nome) ilike '%$nome%'");
+                $municipios = DB::select("select * from municipio where unaccent(nome) ilike '%$nome%'");
 
-                // if(count($municipios) > 0) {
+                if(count($municipios) > 0) {
 
-                //     $endereco = Endereco::create([
-                //         'logradouro' => $item[5],
-                //         'municipio_id' => $municipios[0]->id,
-                //         'estado_id' => $municipios[0]->estado_id
-                //     ]);
+                    $endereco = Endereco::create([
+                        'logradouro' => $item[5],
+                        'municipio_id' => $municipios[0]->id,
+                        'estado_id' => $municipios[0]->estado_id
+                    ]);
 
-                //     $pessoa->enderecos()->save($endereco);
-                // }
+                    $pessoa->enderecos()->save($endereco);
+                }
                 
                 Cliente::create([
                     'id' => str_replace('.', '', $item[0]),
